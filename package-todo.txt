@@ -1,8 +1,0 @@
-eventually:
-- switch to px instead of rem where it makes sense (hard problem! where does it make sense?)
-- use logical properties instead of top/bottom/left/right
-- more css optimization (see discord)
-- bring icons out of html??
-
-WHEN anchor positioning:
-use it for date field, tab indicator, split button, etc etc etc

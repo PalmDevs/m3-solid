@@ -1,0 +1,118 @@
+.container {
+	composes: containerBase from "./shared.module.css";
+	--_container-color: var(
+		--m3-filled-text-field-container-color,
+		var(--m3c-surface-container-highest)
+	);
+	--_container-shape: var(
+		--m3-filled-text-field-container-shape,
+		var(--m3-shape-extra-small) var(--m3-shape-extra-small) 0 0
+	);
+	--_active-indicator-color: var(
+		--m3-filled-text-field-active-indicator-color,
+		var(--m3c-on-surface-variant)
+	);
+	--_active-indicator-height: var(
+		--m3-filled-text-field-active-indicator-height,
+		1px
+	);
+	--_focus-active-indicator-color: var(
+		--m3-filled-text-field-focus-active-indicator-color,
+		var(--m3c-primary)
+	);
+	--_focus-active-indicator-height: var(
+		--m3-filled-text-field-focus-active-indicator-height,
+		2px
+	);
+	--_hover-active-indicator-color: var(
+		--m3-filled-text-field-hover-active-indicator-color,
+		var(--m3c-on-surface)
+	);
+	--_hover-state-layer-color: var(
+		--m3-filled-text-field-hover-state-layer-color,
+		oklab(from var(--m3c-on-surface) l a b / 0.08)
+	);
+	--_error-active-indicator-color: var(
+		--m3-filled-text-field-error-active-indicator-color,
+		var(--m3c-error)
+	);
+	--_error-label-color: var(
+		--m3-filled-text-field-error-label-color,
+		var(--m3c-error)
+	);
+}
+
+.container :is(input, textarea) {
+	padding: 1.5rem 1rem 0.5rem 1rem;
+	border-radius: var(--_container-shape);
+	background-color: var(--_container-color);
+}
+
+.container textarea {
+	resize: none;
+}
+
+.container label {
+	inset-inline-start: 1rem;
+}
+
+/* Label states */
+
+.container :is(input, textarea):focus ~ label,
+.container :is(input, textarea):not(:placeholder-shown) ~ label {
+	font-size: 0.75rem;
+	line-height: 1.333;
+	top: 0.5rem;
+	translate: 0 0;
+}
+
+/* Error state labels */
+.error label {
+	color: var(--_error-label-color);
+}
+
+.error :is(input, textarea):enabled:hover:not(:focus) ~ label,
+.error :is(input, textarea):focus ~ label {
+	color: var(--_error-label-color);
+}
+
+/* State layer */
+.layer {
+	composes: layerBase from "./shared.module.css";
+	border-radius: var(--_container-shape);
+}
+
+.container :is(input, textarea):enabled:hover:not(:focus) ~ .layer {
+	background-color: var(--_hover-state-layer-color);
+}
+
+/* Bottom indicator line */
+.layer::after {
+	position: absolute;
+	content: " ";
+	display: block;
+	width: 100%;
+	bottom: 0;
+	height: var(--_active-indicator-height);
+	background-color: var(--_active-indicator-color);
+	transition: all 100ms;
+}
+
+.container :is(input, textarea):enabled:hover:not(:focus) ~ .layer::after {
+	background-color: var(--_hover-active-indicator-color);
+}
+
+.container :is(input, textarea):focus ~ .layer::after {
+	background-color: var(--_focus-active-indicator-color);
+	height: var(--_focus-active-indicator-height);
+}
+
+/* Error state layer */
+.error .layer::after {
+	background-color: var(--_error-active-indicator-color);
+}
+
+.error :is(input, textarea):enabled:hover:not(:focus) ~ .layer::after,
+.error :is(input, textarea):focus ~ .layer::after {
+	background-color: var(--_error-active-indicator-color);
+}

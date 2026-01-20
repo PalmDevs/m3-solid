@@ -1,0 +1,114 @@
+.container {
+	--_container-color: var(--m3-chip-container-color, transparent);
+	--_container-shape: var(--m3-chip-container-shape, var(--m3-shape-small));
+	--_container-height: var(--m3-chip-container-height, 2rem);
+	--_label-color: var(--m3-chip-label-color, var(--m3c-on-surface));
+	--_outline-color: var(--m3-chip-outline-color, var(--m3c-outline));
+	--_outline-width: var(--m3-chip-outline-width, 0.0625rem);
+	--_icon-color: var(--m3-chip-icon-color, var(--m3c-primary));
+	--_trailing-icon-color: var(
+		--m3-chip-trailing-icon-color,
+		var(--m3c-on-surface-variant)
+	);
+	--_selected-container-color: var(
+		--m3-chip-selected-container-color,
+		var(--m3c-secondary-container)
+	);
+	--_selected-label-color: var(
+		--m3-chip-selected-label-color,
+		var(--m3c-on-secondary-container)
+	);
+	--_elevated-container-color: var(
+		--m3-chip-elevated-container-color,
+		var(--m3c-surface-container-low)
+	);
+	--_elevated-container-elevation: var(
+		--m3-chip-elevated-container-elevation,
+		var(--m3-elevation-1)
+	);
+	--_disabled-opacity: var(--m3-chip-disabled-opacity, 0.38);
+
+	font-family: var(--m3-chip-label-font, var(--m3-font));
+	font-size: var(--m3-chip-label-size, 0.875rem);
+	line-height: var(--m3-chip-label-line-height, 1.429);
+	font-weight: var(--m3-chip-label-weight, 500);
+	display: inline-flex;
+	align-items: center;
+	height: var(--_container-height);
+	border-radius: var(--_container-shape);
+	cursor: pointer;
+	padding: 0 1rem;
+	gap: 0.5rem;
+	text-decoration: none;
+	border: none;
+	background-color: var(--_container-color);
+	color: var(--_label-color);
+
+	&.variant-general,
+	&.variant-input,
+	&.variant-assist {
+		outline: solid var(--_outline-width) var(--_outline-color);
+		outline-offset: calc(-1 * var(--_outline-width));
+	}
+
+	&.elevated {
+		outline: none;
+		background-color: var(--_elevated-container-color);
+		box-shadow: var(--_elevated-container-elevation);
+	}
+
+	&.selected {
+		outline: none;
+		background-color: var(--_selected-container-color);
+		color: var(--_selected-label-color);
+
+		& .icon :global(svg),
+		& .trailingIcon :global(svg) {
+			color: var(--_selected-label-color);
+		}
+	}
+
+	&:focus-visible {
+		outline: none;
+	}
+
+	&:disabled {
+		opacity: var(--_disabled-opacity);
+		cursor: not-allowed;
+	}
+}
+
+/* Icons */
+.icon {
+	margin-left: -0.5rem;
+	display: flex;
+	align-items: center;
+
+	& :global(svg) {
+		width: var(--m3-chip-icon-size, 1.125rem);
+		height: var(--m3-chip-icon-size, 1.125rem);
+		color: var(--_icon-color);
+	}
+}
+
+.trailingIcon {
+	margin-right: -0.5rem;
+	display: flex;
+	align-items: center;
+
+	& :global(svg) {
+		width: var(--m3-chip-trailing-icon-size, 1.125rem);
+		height: var(--m3-chip-trailing-icon-size, 1.125rem);
+		color: var(--_trailing-icon-color);
+	}
+}
+
+.label {
+	white-space: nowrap;
+}
+
+@media screen and (forced-colors: active) {
+	.container {
+		border: solid 1px;
+	}
+}

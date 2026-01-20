@@ -1,0 +1,31 @@
+.svg {
+	--_active-indicator-color: var(
+		--m3-loading-indicator-active-indicator-color,
+		var(--m3c-primary)
+	);
+
+	color: var(--_active-indicator-color);
+}
+
+.container {
+	--_container-color: var(
+		--m3-loading-indicator-container-color,
+		var(--m3c-primary-container)
+	);
+	--_container-shape: var(
+		--m3-loading-indicator-container-shape,
+		var(--m3-shape-full)
+	);
+	--_icon-color: var(
+		--m3-loading-indicator-icon-color,
+		var(--m3c-on-primary-container)
+	);
+
+	background-color: var(--_container-color);
+	color: var(--_icon-color);
+	border-radius: var(--_container-shape);
+}
+
+.center {
+	margin: auto;
+}

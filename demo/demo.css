@@ -1,0 +1,234 @@
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap");
+
+:root {
+	font-family: "Google Sans Flex", "Roboto", sans-serif;
+	color-scheme: light dark;
+	accent-color: var(--m3c-primary);
+}
+
+body {
+	margin: 0;
+	font-family: var(--m3-font);
+	background-color: var(--m3c-surface);
+	color: var(--m3c-on-surface);
+}
+
+.demo-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 2rem;
+}
+
+header {
+	text-align: center;
+	margin-bottom: 3rem;
+}
+
+header h1 {
+	font-size: 3rem;
+	margin: 0;
+	color: var(--m3c-primary);
+}
+
+header p {
+	font-size: 1.25rem;
+	color: var(--m3c-on-surface-variant);
+	margin: 0.5rem 0 0;
+}
+
+section {
+	margin-bottom: 3rem;
+}
+
+section h2 {
+	font-size: 2rem;
+	margin-bottom: 1.5rem;
+	color: var(--m3c-on-surface);
+}
+
+.button-row {
+	display: flex;
+	gap: 1rem;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.card-row {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.switch-row {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.switch-row label {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	cursor: pointer;
+}
+
+.switch-demo {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.switch-item {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.5rem;
+	border-radius: var(--m3-shape-medium);
+	cursor: pointer;
+	transition: background-color var(--m3-easing-fast);
+}
+
+.switch-item:hover {
+	background-color: oklab(from var(--m3c-on-surface) l a b / 0.05);
+}
+
+.demo-note {
+	margin-top: 1rem;
+	padding: 1rem;
+	background-color: var(--m3c-surface-container);
+	border-radius: var(--m3-shape-medium);
+	border-left: 4px solid var(--m3c-primary);
+}
+
+.demo-note p {
+	margin: 0;
+	color: var(--m3c-on-surface-variant);
+	font-size: 0.875rem;
+	line-height: 1.5;
+}
+
+.demo-note code {
+	background-color: oklab(from var(--m3c-primary) l a b / 0.1);
+	color: var(--m3c-primary);
+	padding: 0.125rem 0.375rem;
+	border-radius: 0.25rem;
+	font-family: "Consolas", "Monaco", monospace;
+	font-size: 0.85em;
+}
+
+.easing-demo {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	padding: 1rem;
+	background-color: var(--m3c-surface-container-low);
+	border-radius: var(--m3-shape-large);
+}
+
+.easing-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.easing-label {
+	font-weight: 500;
+	color: var(--m3c-on-surface);
+	font-size: 0.875rem;
+}
+
+.easing-bar-container {
+	width: 100%;
+	position: relative;
+	height: 3rem;
+}
+
+.easing-bar {
+	position: absolute;
+	height: 3rem;
+	width: 3rem;
+	background: linear-gradient(90deg, var(--m3c-primary), var(--m3c-tertiary));
+	border-radius: var(--m3-shape-small);
+	box-shadow: var(--m3-elevation-1);
+}
+
+@keyframes slideStandard {
+	0% {
+		transform: translateX(0);
+	}
+
+	50% {
+		transform: translateX(calc(100vw - 18rem));
+		animation-timing-function: var(--m3-easing);
+	}
+
+	100% {
+		transform: translateX(0);
+		animation-timing-function: var(--m3-easing);
+	}
+}
+
+@keyframes slideFast {
+	0% {
+		transform: translateX(0);
+	}
+
+	50% {
+		transform: translateX(calc(100vw - 18rem));
+		animation-timing-function: var(--m3-easing-fast);
+	}
+
+	100% {
+		transform: translateX(0);
+		animation-timing-function: var(--m3-easing-fast);
+	}
+}
+
+@keyframes slideFastSpatial {
+	0% {
+		transform: translateX(0);
+	}
+
+	50% {
+		transform: translateX(calc(100vw - 18rem));
+		animation-timing-function: var(--m3-easing-fast-spatial);
+	}
+
+	100% {
+		transform: translateX(0);
+		animation-timing-function: var(--m3-easing-fast-spatial);
+	}
+}
+
+@keyframes slideEmphasized {
+	0% {
+		transform: translateX(0);
+	}
+
+	50% {
+		transform: translateX(calc(100vw - 18rem));
+		animation-timing-function: var(--m3-timing-function-emphasized-decel);
+	}
+
+	100% {
+		transform: translateX(0);
+		animation-timing-function: var(--m3-timing-function-emphasized-decel);
+	}
+}
+
+.expanded-overlay {
+	position: fixed;
+	inset: 0;
+	background-color: oklab(from var(--m3c-scrim) l a b / 0.3);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 100;
+	padding: 2rem;
+}
+
+.expanded-card {
+	max-width: 600px;
+	width: 100%;
+}

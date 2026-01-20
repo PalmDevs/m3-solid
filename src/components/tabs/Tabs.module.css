@@ -1,0 +1,115 @@
+.containerBase {
+	--_container-color: var(--m3-tabs-container-color, var(--m3c-surface));
+	--_container-height: var(--m3-tabs-container-height, 3rem);
+	--_active-indicator-color: var(
+		--m3-tabs-active-indicator-color,
+		var(--m3c-primary)
+	);
+	--_active-indicator-height: var(--m3-tabs-active-indicator-height, 3px);
+	--_active-indicator-shape: var(
+		--m3-tabs-active-indicator-shape,
+		var(--m3-shape-full) var(--m3-shape-full) 0 0
+	);
+	--_active-label-color: var(--m3-tabs-active-label-color, var(--m3c-primary));
+	--_inactive-label-color: var(
+		--m3-tabs-inactive-label-color,
+		var(--m3c-on-surface-variant)
+	);
+	--_focus-state-layer-color: var(
+		--m3-tabs-focus-state-layer-color,
+		var(--m3c-primary-container)
+	);
+
+	font-family: var(--m3-tabs-label-font, var(--m3-font));
+	font-size: var(--m3-tabs-label-size, 0.875rem);
+	line-height: var(--m3-tabs-label-line-height, 1.429);
+	font-weight: var(--m3-tabs-label-weight, 500);
+	position: relative;
+	height: var(--_container-height);
+	background-color: var(--_container-color);
+}
+
+.container {
+	composes: containerBase;
+	display: flex;
+	overflow: hidden;
+}
+
+.containerScrollable {
+	composes: containerBase;
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: max-content;
+	overflow-x: auto;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.tab {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1 0;
+	padding: 0 1rem;
+	cursor: pointer;
+	color: var(--_inactive-label-color);
+	user-select: none;
+	white-space: nowrap;
+	text-decoration: none;
+	transition: color var(--m3-easing-fast);
+
+	&.selected {
+		color: var(--_active-label-color);
+	}
+
+	&:focus-visible {
+		outline: none;
+		background-color: var(--_focus-state-layer-color);
+	}
+}
+
+.containerScrollable .tab {
+	flex: none;
+}
+
+.input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+
+	&:focus-visible + .tab,
+	&:focus-visible {
+		& ~ .tab,
+		& + .tab {
+			background-color: var(--_focus-state-layer-color);
+		}
+	}
+}
+
+/* Tab indicator bar */
+.barBase {
+	position: absolute;
+	bottom: 0;
+	height: var(--_active-indicator-height);
+	background-color: var(--_active-indicator-color);
+	border-radius: var(--_active-indicator-shape);
+	transition: var(--m3-easing-fast-spatial);
+}
+
+.bar {
+	composes: barBase;
+}
+
+.barScrollable {
+	composes: barBase;
+}
+
+@media screen and (forced-colors: active) {
+	.bar,
+	.barScrollable {
+		background-color: CanvasText;
+	}
+}

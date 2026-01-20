@@ -1,0 +1,109 @@
+.container {
+	--_container-color: var(
+		--m3-dialog-container-color,
+		var(--m3c-surface-container-high)
+	);
+	--_container-shape: var(
+		--m3-dialog-container-shape,
+		var(--m3-shape-extra-large)
+	);
+	--_headline-color: var(--m3-dialog-headline-color, var(--m3c-on-surface));
+	--_supporting-text-color: var(
+		--m3-dialog-supporting-text-color,
+		var(--m3c-on-surface-variant)
+	);
+	--_icon-color: var(--m3-dialog-icon-color, var(--m3c-secondary));
+	--_scrim-color: var(
+		--m3-dialog-scrim-color,
+		oklab(from var(--m3c-scrim) l a b / 0.3)
+	);
+
+	display: flex;
+	flex-direction: column;
+	background-color: var(--_container-color);
+	border: none;
+	border-radius: var(--_container-shape);
+	/* Keep some margin on the sides */
+	/* width: calc(100dvw - 3rem); */
+	min-width: var(--m3-dialog-container-min-width, 17.5rem);
+	max-width: var(
+		--m3-dialog-container-max-width,
+		min(35rem, calc(100dvw - 3rem))
+	);
+	padding: var(--m3-dialog-container-padding, 1.5rem);
+	overflow: auto;
+	position: fixed;
+	inset: 0;
+	opacity: 0;
+	visibility: hidden;
+
+	&[open] {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+
+		&.headlineCenter {
+			& .headline {
+				text-align: center;
+			}
+		}
+	}
+
+	&::backdrop {
+		/* Hide the native backdrop since we use a custom one */
+		opacity: 0;
+		pointer-events: all;
+	}
+}
+
+.backdrop {
+	--_scrim-color: var(
+		--m3-dialog-scrim-color,
+		oklab(from var(--m3c-scrim) l a b / 0.3)
+	);
+
+	display: none;
+	position: fixed;
+	inset: 0;
+	background-color: var(--_scrim-color);
+	opacity: 0;
+	z-index: 1;
+
+	*:has(dialog[open]) > & {
+		display: block;
+		opacity: 1;
+	}
+}
+
+.icon {
+	color: var(--_icon-color);
+	flex-shrink: 0;
+	align-self: center;
+	margin-bottom: 1rem;
+
+	& > :global(svg) {
+		width: var(--m3-dialog-icon-size, 24px);
+		height: var(--m3-dialog-icon-size, 24px);
+	}
+}
+
+.headline {
+	color: var(--_headline-color);
+	margin-top: 0;
+	margin-bottom: 1rem;
+
+	&.center {
+		text-align: center;
+	}
+}
+
+.content {
+	color: var(--_supporting-text-color);
+	margin-bottom: 1.5rem;
+}
+
+.buttons {
+	display: flex;
+	justify-content: flex-end;
+	gap: var(--m3-dialog-action-spacing, 0.5rem);
+}

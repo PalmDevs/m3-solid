@@ -1,14 +1,42 @@
 {
-  "extends": "./.svelte-kit/tsconfig.json",
-  "exclude": ["node_modules"],
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true
-  }
+	"compilerOptions": {
+		// Environment setup & latest features
+		"lib": ["ESNext", "DOM"],
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleDetection": "force",
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
+		"allowJs": true,
+		"baseUrl": ".",
+
+		// Bundler mode
+		"moduleResolution": "bundler",
+		"verbatimModuleSyntax": true,
+		"noEmit": false,
+		"declaration": true,
+		"declarationMap": true,
+
+		// Best practices
+		"strict": true,
+		"skipLibCheck": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
+		"noImplicitOverride": true,
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+
+		// Some stricter flags (disabled by default)
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"noPropertyAccessFromIndexSignature": false,
+
+		// Path aliases
+		"paths": {
+			"~/*": ["./src/*"]
+		}
+	},
+	"include": ["src", "demo"]
 }

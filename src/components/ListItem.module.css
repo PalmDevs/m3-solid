@@ -1,0 +1,115 @@
+.container {
+	--_container-color: var(--m3-list-item-container-color, transparent);
+	--_headline-color: var(--m3-list-item-headline-color, var(--m3c-on-surface));
+	--_supporting-text-color: var(
+		--m3-list-item-supporting-text-color,
+		var(--m3c-on-surface-variant)
+	);
+	--_overline-color: var(
+		--m3-list-item-overline-color,
+		var(--m3c-on-surface-variant)
+	);
+	--_leading-icon-color: var(
+		--m3-list-item-leading-icon-color,
+		var(--m3c-on-surface-variant)
+	);
+	--_trailing-icon-color: var(
+		--m3-list-item-trailing-icon-color,
+		var(--m3c-on-surface-variant)
+	);
+	--_trailing-text-color: var(
+		--m3-list-item-trailing-text-color,
+		var(--m3c-on-surface-variant)
+	);
+	--_one-line-height: var(--m3-list-item-one-line-height, 3.5rem);
+	--_two-line-height: var(--m3-list-item-two-line-height, 4.5rem);
+	--_three-line-height: var(--m3-list-item-three-line-height, 5.5rem);
+
+	display: flex;
+	justify-self: stretch;
+	padding: 0.5rem 1.5rem 0.5rem 1rem;
+	align-items: center;
+	gap: 1rem;
+	text-align: inherit;
+	border: none;
+	background: var(--_container-color);
+	color: inherit;
+
+	& p {
+		margin: 0;
+	}
+
+	&.lines-1 {
+		height: calc(var(--_one-line-height) * var(--m3-density-scale, 1));
+	}
+
+	&.lines-2 {
+		height: calc(var(--_two-line-height) * var(--m3-density-scale, 1));
+	}
+
+	&.lines-3 {
+		height: calc(var(--_three-line-height) * var(--m3-density-scale, 1));
+		padding-top: 0.75rem;
+		padding-bottom: 0.75rem;
+		align-items: flex-start;
+	}
+}
+
+button.container,
+label.container {
+	cursor: pointer;
+}
+
+.body {
+	flex-grow: 1;
+}
+
+.leading,
+.trailing {
+	display: contents;
+	color: var(--_leading-icon-color);
+
+	& :global(svg) {
+		width: var(--m3-list-item-leading-icon-size, 1.5rem);
+		height: var(--m3-list-item-leading-icon-size, 1.5rem);
+		flex-shrink: 0;
+	}
+}
+
+.trailing {
+	font-family: var(--m3-list-item-trailing-font, var(--m3-font));
+	font-size: var(--m3-list-item-trailing-size, 0.688rem);
+	line-height: var(--m3-list-item-trailing-line-height, 1.455);
+	font-weight: var(--m3-list-item-trailing-weight, 500);
+	color: var(--_trailing-text-color);
+
+	& :global(svg) {
+		color: var(--_trailing-icon-color);
+		width: var(--m3-list-item-trailing-icon-size, 1.5rem);
+		height: var(--m3-list-item-trailing-icon-size, 1.5rem);
+	}
+}
+
+.supporting {
+	font-family: var(--m3-list-item-supporting-font, var(--m3-font));
+	font-size: var(--m3-list-item-supporting-size, 0.875rem);
+	line-height: var(--m3-list-item-supporting-line-height, 1.429);
+	font-weight: var(--m3-list-item-supporting-weight, 400);
+	color: var(--_supporting-text-color);
+}
+
+.overline {
+	font-family: var(--m3-list-item-overline-font, var(--m3-font));
+	font-size: var(--m3-list-item-overline-size, 0.688rem);
+	line-height: var(--m3-list-item-overline-line-height, 1.455);
+	font-weight: var(--m3-list-item-overline-weight, 500);
+	color: var(--_overline-color);
+}
+
+.headline {
+	font-family: var(--m3-list-item-headline-font, var(--m3-font));
+	font-size: var(--m3-list-item-headline-size, 1rem);
+	line-height: var(--m3-list-item-headline-line-height, 1.5);
+	font-weight: var(--m3-list-item-headline-weight, 400);
+	color: var(--_headline-color);
+}

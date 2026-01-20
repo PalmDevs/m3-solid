@@ -1,0 +1,291 @@
+/* Reset and base styles */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+.m3-container {
+	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.m3-container a,
+a.m3-container {
+	text-decoration: none;
+}
+
+.m3-container dialog,
+dialog.m3-container {
+	margin: auto;
+}
+
+:focus-visible {
+	outline: none;
+	animation: m3-focus-outward 0.6s cubic-bezier(0.14, 5.63, 0.4, 0.5) forwards;
+}
+
+/* Design Tokens */
+:root {
+	/* Elevations */
+	--m3-elevation-0: none;
+	--m3-elevation-1:
+		0px 1px 2px 0px oklab(from var(--m3c-shadow) l a b / 0.3),
+		0px 1px 3px 1px oklab(from var(--m3c-shadow) l a b / 0.15);
+	--m3-elevation-2:
+		0px 1px 2px 0px oklab(from var(--m3c-shadow) l a b / 0.3),
+		0px 2px 6px 2px oklab(from var(--m3c-shadow) l a b / 0.15);
+	--m3-elevation-3:
+		0px 1px 3px 0px oklab(from var(--m3c-shadow) l a b / 0.3),
+		0px 4px 8px 3px oklab(from var(--m3c-shadow) l a b / 0.15);
+	--m3-elevation-4:
+		0px 2px 3px 0px oklab(from var(--m3c-shadow) l a b / 0.3),
+		0px 6px 10px 4px oklab(from var(--m3c-shadow) l a b / 0.15);
+	--m3-elevation-5:
+		0px 4px 4px 0px oklab(from var(--m3c-shadow) l a b / 0.3),
+		0px 8px 12px 6px oklab(from var(--m3c-shadow) l a b / 0.15);
+
+	/* Shapes */
+	--m3-shape-none: 0;
+	--m3-shape-extra-small: 4px;
+	--m3-shape-small: 8px;
+	--m3-shape-medium: 12px;
+	--m3-shape-large: 16px;
+	--m3-shape-large-increased: 20px;
+	--m3-shape-extra-large: 28px;
+	--m3-shape-full: calc(infinity * 1px);
+	--m3-optical-centering-coefficient: 0.11;
+
+	/* Typography */
+	--m3-font: "Google Sans Flex", Roboto, system-ui;
+	--m3-font-mono: "Google Sans Code", "Roboto Mono", monospace;
+
+	/* Expressive easing */
+	--m3-timing-function-fast-spatial: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+	--m3-duration-fast-spatial: 350ms;
+	--m3-easing-fast-spatial: var(--m3-timing-function-fast-spatial)
+		var(--m3-duration-fast-spatial);
+
+	--m3-timing-function-spatial: cubic-bezier(0.38, 1.21, 0.22, 1);
+	--m3-duration-spatial: 500ms;
+	--m3-easing-spatial: var(--m3-timing-function-spatial)
+		var(--m3-duration-spatial);
+
+	--m3-timing-function-slow-spatial: cubic-bezier(0.39, 1.29, 0.35, 0.98);
+	--m3-duration-slow-spatial: 650ms;
+	--m3-easing-slow-spatial: var(--m3-timing-function-slow-spatial)
+		var(--m3-duration-slow-spatial);
+
+	--m3-timing-function-fast: cubic-bezier(0.31, 0.94, 0.34, 1);
+	--m3-duration-fast: 150ms;
+	--m3-easing-fast: var(--m3-timing-function-fast) var(--m3-duration-fast);
+
+	--m3-timing-function: cubic-bezier(0.34, 0.8, 0.34, 1);
+	--m3-duration: 200ms;
+	--m3-easing: var(--m3-timing-function) var(--m3-duration);
+
+	--m3-timing-function-slow: cubic-bezier(0.34, 0.88, 0.34, 1);
+	--m3-duration-slow: 300ms;
+	--m3-easing-slow: var(--m3-timing-function-slow) var(--m3-duration-slow);
+
+	--m3-timing-function-emphasized: linear(
+		0,
+		0.034 6%,
+		0.073 9%,
+		0.126 11%,
+		0.194 13%,
+		0.273 15%,
+		0.351 16%,
+		0.541 18%,
+		0.652 20%,
+		0.755 24%,
+		0.839 30%,
+		0.91 39%,
+		0.959 53%,
+		0.989 72%,
+		1
+	);
+	--m3-timing-function-emphasized-accel: cubic-bezier(0.3, 0, 0.8, 0.15);
+	--m3-timing-function-emphasized-decel: cubic-bezier(0.05, 0.7, 0.1, 1);
+
+	--m3-timing-function-zeno: linear(
+		0,
+		0.08 1.5%,
+		0.15 2.93%,
+		0.22 4.48%,
+		0.29 6.18%,
+		0.35 7.77%,
+		0.41 9.52%,
+		0.47 11.45%,
+		0.52 13.24%,
+		0.57 15.22%,
+		0.61 16.98%,
+		0.65 18.93%,
+		0.69 21.12%,
+		0.73 23.61%,
+		0.76 25.74%,
+		0.79 28.14%,
+		0.82 30.92%,
+		0.84 33.05%,
+		0.86 35.46%,
+		0.88 38.24%,
+		0.9 41.52%,
+		0.92 45.55%,
+		0.93 47.96%,
+		0.95 54.02%,
+		0.96 58.05%,
+		0.97 63.24%,
+		0.98 70.55%,
+		0.99 83.05%,
+		1
+	);
+
+	/* Background (dynamic) */
+	--m3v-background: var(--m3c-surface);
+}
+
+/* Typography Styles */
+.m3-display-large {
+	font-family: var(--m3-font);
+	font-size: 3.563rem;
+	line-height: 1.123;
+	font-weight: 400;
+}
+
+.m3-display-medium {
+	font-family: var(--m3-font);
+	font-size: 2.813rem;
+	line-height: 1.156;
+	font-weight: 400;
+}
+
+.m3-display-small {
+	font-family: var(--m3-font);
+	font-size: 2.25rem;
+	line-height: 1.222;
+	font-weight: 400;
+}
+
+.m3-headline-large {
+	font-family: var(--m3-font);
+	font-size: 2rem;
+	line-height: 1.25;
+	font-weight: 400;
+}
+
+.m3-headline-medium {
+	font-family: var(--m3-font);
+	font-size: 1.75rem;
+	line-height: 1.286;
+	font-weight: 400;
+}
+
+.m3-headline-small {
+	font-family: var(--m3-font);
+	font-size: 1.5rem;
+	line-height: 1.333;
+	font-weight: 400;
+}
+
+.m3-title-large {
+	font-family: var(--m3-font);
+	font-size: 1.375rem;
+	line-height: 1.273;
+	font-weight: 400;
+}
+
+.m3-title-medium {
+	font-family: var(--m3-font);
+	font-size: 1rem;
+	line-height: 1.5;
+	font-weight: 500;
+}
+
+.m3-title-small {
+	font-family: var(--m3-font);
+	font-size: 0.875rem;
+	line-height: 1.429;
+	font-weight: 500;
+}
+
+.m3-label-large {
+	font-family: var(--m3-font);
+	font-size: 0.875rem;
+	line-height: 1.429;
+	font-weight: 500;
+}
+
+.m3-label-medium {
+	font-family: var(--m3-font);
+	font-size: 0.75rem;
+	line-height: 1.333;
+	font-weight: 500;
+}
+
+.m3-label-small {
+	font-family: var(--m3-font);
+	font-size: 0.688rem;
+	line-height: 1.455;
+	font-weight: 500;
+}
+
+.m3-body-large {
+	font-family: var(--m3-font);
+	font-size: 1rem;
+	line-height: 1.5;
+	font-weight: 400;
+}
+
+.m3-body-medium {
+	font-family: var(--m3-font);
+	font-size: 0.875rem;
+	line-height: 1.429;
+	font-weight: 400;
+}
+
+.m3-body-small {
+	font-family: var(--m3-font);
+	font-size: 0.75rem;
+	line-height: 1.333;
+	font-weight: 400;
+}
+
+/* Focus animations */
+@keyframes m3-focus-outward {
+	0% {
+		box-shadow: 0 0 0 0px var(--m3c-secondary);
+	}
+
+	100% {
+		box-shadow: 0 0 0 3px var(--m3c-secondary);
+	}
+}
+
+@keyframes m3-focus-inward {
+	0% {
+		box-shadow: inset 0 0 0 0px var(--m3c-secondary);
+	}
+
+	100% {
+		box-shadow: inset 0 0 0 3px var(--m3c-secondary);
+	}
+}
+
+.m3-focused-outward {
+	animation: m3-focus-outward 0.6s cubic-bezier(0.14, 5.63, 0.4, 0.5) forwards;
+}
+
+.m3-focused-inward {
+	animation: m3-focus-inward 0.6s cubic-bezier(0.14, 5.63, 0.4, 0.5) forwards;
+}
+
+/* Opacity animation */
+@keyframes opacity {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}

@@ -1,0 +1,165 @@
+.container {
+	--_container-color: var(--m3-fab-container-color);
+	--_label-color: var(--m3-fab-label-color);
+	--_icon-color: var(--m3-fab-icon-color, currentColor);
+	--_container-shape: var(--m3-fab-container-shape);
+	--_container-elevation: var(
+		--m3-fab-container-elevation,
+		var(--m3-elevation-3)
+	);
+	--_hover-container-elevation: var(
+		--m3-fab-hover-container-elevation,
+		var(--m3-elevation-4)
+	);
+	--_container-height: var(--m3-fab-container-height);
+	--_icon-size: var(--m3-fab-icon-size);
+
+	display: inline-flex;
+	border: none;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	print-color-adjust: exact;
+	background-color: var(--_container-color);
+	color: var(--_label-color);
+	box-shadow: var(--_container-elevation);
+}
+
+.size-small {
+	--_container-height: var(--m3-fab-container-height, 2.5rem);
+	--_container-shape: var(--m3-fab-container-shape, var(--m3-shape-small));
+	height: var(--_container-height);
+	padding-inline: 0.5rem;
+	gap: 0.5rem;
+	border-radius: var(--_container-shape);
+}
+
+.size-normal {
+	--_container-height: var(--m3-fab-container-height, 3.5rem);
+	--_container-shape: var(--m3-fab-container-shape, var(--m3-shape-large));
+	font-family: var(--m3-fab-label-font, var(--m3-font));
+	font-size: var(--m3-fab-label-size, 1rem);
+	line-height: var(--m3-fab-label-line-height, 1.5);
+	font-weight: var(--m3-fab-label-weight, 500);
+	height: var(--_container-height);
+	padding-inline: 1rem;
+	gap: 0.5rem;
+	border-radius: var(--_container-shape);
+}
+
+.size-medium {
+	--_container-height: var(--m3-fab-container-height, 5rem);
+	--_container-shape: var(
+		--m3-fab-container-shape,
+		var(--m3-shape-large-increased)
+	);
+	font-family: var(--m3-fab-label-font, var(--m3-font));
+	font-size: var(--m3-fab-label-size, 1.375rem);
+	line-height: var(--m3-fab-label-line-height, 1.273);
+	font-weight: var(--m3-fab-label-weight, 400);
+	height: var(--_container-height);
+	padding-inline: 1.625rem;
+	gap: 0.75rem;
+	border-radius: var(--_container-shape);
+}
+
+.size-large {
+	--_container-height: var(--m3-fab-container-height, 6rem);
+	--_container-shape: var(
+		--m3-fab-container-shape,
+		var(--m3-shape-extra-large)
+	);
+	font-family: var(--m3-fab-label-font, var(--m3-font));
+	font-size: var(--m3-fab-label-size, 1.5rem);
+	line-height: var(--m3-fab-label-line-height, 1.333);
+	font-weight: var(--m3-fab-label-weight, 400);
+	height: var(--_container-height);
+	padding-inline: 1.75rem;
+	gap: 1rem;
+	border-radius: var(--_container-shape);
+}
+
+.elevation-normal {
+	--_container-elevation: var(
+		--m3-fab-container-elevation,
+		var(--m3-elevation-3)
+	);
+	--_hover-container-elevation: var(
+		--m3-fab-hover-container-elevation,
+		var(--m3-elevation-4)
+	);
+
+	@media (hover: hover) {
+		&:hover {
+			box-shadow: var(--_hover-container-elevation);
+		}
+	}
+}
+
+.elevation-lowered {
+	--_container-elevation: var(
+		--m3-fab-container-elevation,
+		var(--m3-elevation-1)
+	);
+	--_hover-container-elevation: var(
+		--m3-fab-hover-container-elevation,
+		var(--m3-elevation-2)
+	);
+
+	@media (hover: hover) {
+		&:hover {
+			box-shadow: var(--_hover-container-elevation);
+		}
+	}
+}
+
+.elevation-none {
+	--_container-elevation: var(--m3-fab-container-elevation, none);
+	box-shadow: none;
+}
+
+.color-primary {
+	--_container-color: var(--m3-fab-container-color, var(--m3c-primary));
+	--_label-color: var(--m3-fab-label-color, var(--m3c-on-primary));
+}
+
+.color-secondary {
+	--_container-color: var(--m3-fab-container-color, var(--m3c-secondary));
+	--_label-color: var(--m3-fab-label-color, var(--m3c-on-secondary));
+}
+
+.color-tertiary {
+	--_container-color: var(--m3-fab-container-color, var(--m3c-tertiary));
+	--_label-color: var(--m3-fab-label-color, var(--m3c-on-tertiary));
+}
+
+.color-primary-container {
+	--_container-color: var(
+		--m3-fab-container-color,
+		var(--m3c-primary-container)
+	);
+	--_label-color: var(--m3-fab-label-color, var(--m3c-on-primary-container));
+}
+
+.color-secondary-container {
+	--_container-color: var(
+		--m3-fab-container-color,
+		var(--m3c-secondary-container)
+	);
+	--_label-color: var(--m3-fab-label-color, var(--m3c-on-secondary-container));
+}
+
+.color-tertiary-container {
+	--_container-color: var(
+		--m3-fab-container-color,
+		var(--m3c-tertiary-container)
+	);
+	--_label-color: var(--m3-fab-label-color, var(--m3c-on-tertiary-container));
+}
+
+@media screen and (forced-colors: active) {
+	.container {
+		border: solid 1px;
+	}
+}

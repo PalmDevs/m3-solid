@@ -1,0 +1,28 @@
+.container {
+	--_track-color: var(
+		--m3-linear-progress-track-color,
+		var(--m3c-surface-container-highest)
+	);
+	--_track-height: var(--m3-linear-progress-track-height, 100%);
+	--_track-shape: var(--m3-linear-progress-track-shape, var(--m3-shape-full));
+	--_active-indicator-color: var(
+		--m3-linear-progress-active-indicator-color,
+		var(--m3c-primary)
+	);
+	--_active-indicator-shape: var(
+		--m3-linear-progress-active-indicator-shape,
+		var(--m3-shape-full)
+	);
+
+	width: 100%;
+	border-radius: var(--_track-shape);
+	background-color: var(--_track-color);
+	overflow: hidden;
+}
+
+.bar {
+	height: var(--_track-height);
+	border-radius: var(--_active-indicator-shape);
+	background-color: var(--_active-indicator-color);
+	transition: width var(--m3-easing-fast);
+}

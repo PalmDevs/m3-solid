@@ -1,0 +1,195 @@
+.rootContainer {
+	display: flex;
+	flex-direction: column;
+}
+
+.singleLine {
+	height: calc(
+		var(--m3-text-field-container-height, 3.5rem) *
+		var(--m3-density-scale, 1)
+	);
+}
+
+.multiLine {
+	min-height: calc(
+		var(--m3-text-field-container-min-height, 5rem) *
+		var(--m3-density-scale, 1)
+	);
+}
+
+.supportingText {
+	composes: bodySmall from "../../shared.module.css";
+	margin: 4px 16px 0 16px;
+	color: var(
+		--m3-text-field-supporting-text-color,
+		var(--m3c-on-surface-variant)
+	);
+	transition: color 100ms;
+
+	&.error {
+		color: var(--m3-text-field-error-supporting-text-color, var(--m3c-error));
+	}
+}
+
+/* ===== Container base ===== */
+.containerBase {
+	--_input-color: var(--m3-text-field-input-text-color, var(--m3c-on-surface));
+	--_label-color: var(
+		--m3-text-field-label-color,
+		var(--m3c-on-surface-variant)
+	);
+	--_focus-label-color: var(
+		--m3-text-field-focus-label-color,
+		var(--m3c-primary)
+	);
+	--_hover-label-color: var(
+		--m3-text-field-hover-label-color,
+		var(--m3c-on-surface)
+	);
+	--_disabled-input-color: var(
+		--m3-text-field-disabled-input-text-color,
+		oklab(from var(--m3c-on-surface) l a b / 0.38)
+	);
+	--_disabled-label-color: var(
+		--m3-text-field-disabled-label-color,
+		oklab(from var(--m3c-on-surface) l a b / 0.38)
+	);
+	--_icon-color: var(--m3-text-field-icon-color, var(--m3c-on-surface-variant));
+	--_error-color: var(--m3-text-field-error-color, var(--m3c-error));
+	--_caret-color: var(--m3-text-field-caret-color, var(--m3c-primary));
+
+	display: inline-flex;
+	position: relative;
+	align-items: center;
+	min-width: var(--m3-text-field-container-min-width, 15rem);
+}
+
+.textArea {
+	font-family: var(--m3-text-field-input-font, var(--m3-font));
+	font-size: var(--m3-text-field-input-size, 1rem);
+	line-height: var(--m3-text-field-input-line-height, 1.5);
+	font-weight: var(--m3-text-field-input-weight, 400);
+	animation: none;
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	color: var(--_input-color);
+	caret-color: var(--_caret-color);
+
+	&:disabled {
+		color: var(--_disabled-input-color);
+	}
+}
+
+.labelBase {
+	font-family: var(--m3-text-field-label-font, var(--m3-font));
+	font-size: var(--m3-text-field-label-size, 1rem);
+	line-height: var(--m3-text-field-label-line-height, 1.5);
+	font-weight: var(--m3-text-field-label-weight, 400);
+	position: absolute;
+	top: 50%;
+	translate: 0 -50%;
+	color: var(--_label-color);
+	pointer-events: none;
+	inset-inline-start: 1rem;
+	transition: color, top, translate, font-size, line-height, letter-spacing;
+	transition-duration: 200ms;
+	transition-timing-function: var(--m3-timing-function-fast);
+}
+
+/* ===== Icon styles ===== */
+.leading {
+	position: relative;
+	margin-inline-start: 0.75rem;
+}
+
+.containerBase:has(.leading) {
+	.textArea {
+		padding-inline-start: 2.75rem;
+	}
+
+	.labelBase {
+		margin-inline-start: 1.75rem;
+	}
+}
+
+.containerBase:has(.trailing) {
+	.textArea {
+		padding-inline-end: 2.75rem;
+	}
+
+	.labelBase {
+		margin-inline-end: 1.75rem;
+	}
+}
+
+.trailing {
+	position: absolute;
+	height: 100%;
+	inset-inline-end: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&:not(:has(.error)) {
+		cursor: pointer;
+	}
+}
+
+.icon {
+	color: var(--_icon-color);
+	pointer-events: none;
+
+	&.error {
+		color: var(--_error-color);
+	}
+}
+
+.iconContainer {
+	width: 48px;
+	height: 48px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.action {
+	composes: iconContainer;
+	border: none;
+	background: transparent;
+	color: var(--_icon-color);
+	pointer-events: all;
+
+	& > div {
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: var(--m3-shape-full);
+	}
+}
+
+/* ===== Layer base ===== */
+.layerBase {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	transition: all 100ms;
+}
+
+/* label states */
+
+.textArea:disabled ~ label {
+	color: var(--_disabled-label-color);
+}
+
+.textArea:enabled:hover:not(:focus) ~ label {
+	color: var(--_hover-label-color);
+}
+
+.textArea:focus ~ label {
+	color: var(--_focus-label-color);
+}

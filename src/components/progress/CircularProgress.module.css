@@ -1,0 +1,16 @@
+.container {
+	--_active-indicator-color: var(
+		--m3-circular-progress-active-indicator-color,
+		var(--m3c-primary)
+	);
+	--_track-color: var(--m3-circular-progress-track-color, transparent);
+	--_active-indicator-width: var(--m3-circular-progress-active-indicator-width);
+	--_size: var(--m3-circular-progress-size);
+
+	rotate: -90deg;
+	color: var(--_active-indicator-color);
+}
+
+.progressCircle {
+	transition: var(--m3-easing-fast);
+}
