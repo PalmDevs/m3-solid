@@ -90,6 +90,7 @@
 	font-weight: var(--m3-text-field-label-weight, 400);
 	position: absolute;
 	top: 50%;
+	user-select: none;
 	translate: 0 -50%;
 	color: var(--_label-color);
 	pointer-events: none;
