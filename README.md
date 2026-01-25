@@ -68,7 +68,7 @@ The library includes all Material Design 3 design tokens:
 
 ## Color Theming
 
-You can define your color scheme using CSS custom properties. See [themes/default.css](./themes/default.css) for an example.
+You can define your color scheme using CSS custom properties. See [themes/default.css](./src/themes/default.css) for an example.
 
 ```css
 :root {
@@ -101,6 +101,6 @@ Apache-2.0 OR GPL-3.0-only
 
 ## Attribution
 
-Converted from [m3-svelte](https://github.com/KTibow/m3-svelte) by KTibow.
+Ported from [m3-svelte](https://github.com/KTibow/m3-svelte) by KTibow.
 
 <sub>Assistance from LLMs were used in this project.</sub>
