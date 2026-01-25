@@ -1,4 +1,4 @@
-import type { JSX, ParentComponent } from 'solid-js'
+import { Show, type JSX, type ParentComponent } from 'solid-js'
 
 interface DemoSectionProps {
 	title: string
@@ -10,7 +10,9 @@ export const DemoSection: ParentComponent<DemoSectionProps> = props => {
 		<section>
 			<h2>{props.title}</h2>
 			{props.children}
-			{props.note && <div class="demo-note">{props.note}</div>}
+			<Show when={props.note}>
+				<div class="demo-note">{props.note}</div>
+			</Show>
 		</section>
 	)
 }

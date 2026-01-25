@@ -1,6 +1,6 @@
 import CheckIcon from '@iconify-icons/mdi/check'
 import CloseIcon from '@iconify-icons/mdi/close'
-import { createSignal, onCleanup, onMount, splitProps } from 'solid-js'
+import { createSignal, onCleanup, onMount, splitProps, Show } from 'solid-js'
 import { mergeClasses } from '../utils'
 import { Icon } from './Icon'
 import styles from './Switch.module.css'
@@ -73,12 +73,12 @@ export const Switch: ParentComponent<SwitchProps> = props => {
 				}}
 			/>
 			<div class={styles.handle}>
-				{local.icons !== 'none' && (
+				<Show when={local.icons !== 'none'}>
 					<Icon icon={CheckIcon} size={16} class={styles.iconChecked} />
-				)}
-				{local.icons === 'both' && (
+				</Show>
+				<Show when={local.icons === 'both'}>
 					<Icon icon={CloseIcon} size={16} class={styles.iconUnchecked} />
-				)}
+				</Show>
 			</div>
 			<div class={styles.hover}></div>
 		</div>
