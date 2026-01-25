@@ -61,48 +61,141 @@ dialog.m3-container {
 	--m3-font-mono: "Google Sans Code", "Roboto Mono", monospace;
 
 	/* Expressive easing */
-	--m3-timing-function-fast-spatial: cubic-bezier(0.42, 1.67, 0.21, 0.9);
-	--m3-duration-fast-spatial: 350ms;
+	--m3-timing-function-fast-spatial: linear(
+		0,
+		0.02,
+		0.07,
+		0.15,
+		0.25 7.8%,
+		0.65 15.5%,
+		0.81,
+		0.93,
+		1.015,
+		1.07 29.9%,
+		1.09,
+		1.092 38.3%,
+		1.015 55.9%,
+		0.99 66.2%,
+		1
+	);
+	--m3-duration-fast-spatial: 383ms;
 	--m3-easing-fast-spatial: var(--m3-timing-function-fast-spatial)
 		var(--m3-duration-fast-spatial);
 
-	--m3-timing-function-spatial: cubic-bezier(0.38, 1.21, 0.22, 1);
-	--m3-duration-spatial: 500ms;
+	--m3-timing-function-spatial: linear(
+		0,
+		0.018,
+		0.06,
+		0.13,
+		0.2 9%,
+		0.53 18%,
+		0.692,
+		0.82,
+		0.9,
+		0.96,
+		0.99 45%,
+		1.012 54%,
+		1
+	);
+	--m3-duration-spatial: 450ms;
 	--m3-easing-spatial: var(--m3-timing-function-spatial)
 		var(--m3-duration-spatial);
 
-	--m3-timing-function-slow-spatial: cubic-bezier(0.39, 1.29, 0.35, 0.98);
-	--m3-duration-slow-spatial: 650ms;
+	--m3-timing-function-slow-spatial: linear(
+		0,
+		0.015,
+		0.06,
+		0.12,
+		0.195 9%,
+		0.54 19%,
+		0.7,
+		0.82,
+		0.9,
+		0.954,
+		0.99 46%,
+		1.01 55%,
+		1.01,
+		1
+	);
+	--m3-duration-slow-spatial: 600ms;
 	--m3-easing-slow-spatial: var(--m3-timing-function-slow-spatial)
 		var(--m3-duration-slow-spatial);
 
-	--m3-timing-function-fast: cubic-bezier(0.31, 0.94, 0.34, 1);
+	--m3-timing-function-fast: linear(
+		0,
+		0.02 2.3%,
+		0.08 5.1%,
+		0.265,
+		0.452,
+		0.61,
+		0.732,
+		0.82 33.7%,
+		0.89,
+		0.93 46.9%,
+		0.974 58.6%,
+		0.994,
+		1
+	);
 	--m3-duration-fast: 150ms;
 	--m3-easing-fast: var(--m3-timing-function-fast) var(--m3-duration-fast);
 
-	--m3-timing-function: cubic-bezier(0.34, 0.8, 0.34, 1);
-	--m3-duration: 200ms;
+	--m3-timing-function: linear(
+		0,
+		0.016 2%,
+		0.08 5%,
+		0.26,
+		0.45,
+		0.605,
+		0.726,
+		0.815 33%,
+		0.89,
+		0.935 47%,
+		0.972 58%,
+		0.996,
+		1
+	);
+	--m3-duration: 233ms;
 	--m3-easing: var(--m3-timing-function) var(--m3-duration);
 
-	--m3-timing-function-slow: cubic-bezier(0.34, 0.88, 0.34, 1);
-	--m3-duration-slow: 300ms;
+	--m3-timing-function-slow: linear(
+		0,
+		0.016 2%,
+		0.08 5%,
+		0.26,
+		0.452,
+		0.61,
+		0.73,
+		0.82 33%,
+		0.89,
+		0.932 46%,
+		0.975 58%,
+		0.995,
+		1
+	);
+	--m3-duration-slow: 333ms;
 	--m3-easing-slow: var(--m3-timing-function-slow) var(--m3-duration-slow);
 
+	/* Other easing */
 	--m3-timing-function-emphasized: linear(
 		0,
-		0.034 6%,
-		0.073 9%,
-		0.126 11%,
-		0.194 13%,
-		0.273 15%,
-		0.351 16%,
-		0.541 18%,
-		0.652 20%,
-		0.755 24%,
-		0.839 30%,
-		0.91 39%,
-		0.959 53%,
-		0.989 72%,
+		0.01 3.2%,
+		0.03,
+		0.06,
+		0.11,
+		0.19 13.3%,
+		0.25,
+		0.32,
+		0.43,
+		0.53,
+		0.61 19.3%,
+		0.69,
+		0.74,
+		0.78,
+		0.81 27.2%,
+		0.88,
+		0.92 40.6%,
+		0.964 55%,
+		0.994,
 		1
 	);
 	--m3-timing-function-emphasized-accel: cubic-bezier(0.3, 0, 0.8, 0.15);
@@ -110,33 +203,17 @@ dialog.m3-container {
 
 	--m3-timing-function-zeno: linear(
 		0,
-		0.08 1.5%,
-		0.15 2.93%,
-		0.22 4.48%,
-		0.29 6.18%,
-		0.35 7.77%,
-		0.41 9.52%,
-		0.47 11.45%,
-		0.52 13.24%,
-		0.57 15.22%,
-		0.61 16.98%,
-		0.65 18.93%,
-		0.69 21.12%,
-		0.73 23.61%,
-		0.76 25.74%,
-		0.79 28.14%,
-		0.82 30.92%,
-		0.84 33.05%,
-		0.86 35.46%,
-		0.88 38.24%,
-		0.9 41.52%,
-		0.92 45.55%,
-		0.93 47.96%,
-		0.95 54.02%,
-		0.96 58.05%,
-		0.97 63.24%,
-		0.98 70.55%,
-		0.99 83.05%,
+		0.175,
+		0.32,
+		0.44,
+		0.54,
+		0.62 17.2%,
+		0.73,
+		0.81,
+		0.87 36.1%,
+		0.926,
+		0.96 55.6%,
+		0.99,
 		1
 	);
 
