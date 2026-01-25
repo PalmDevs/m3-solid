@@ -1,5 +1,5 @@
 import AddIcon from '@iconify-icons/mdi/plus'
-import { Button, Icon } from '../../src'
+import { Button } from '../../src'
 import { DemoSection } from './DemoSection'
 
 export const ButtonsDemo = () => {

@@ -1,4 +1,5 @@
-import { Show, type JSX, type ParentComponent } from 'solid-js'
+import { Show } from 'solid-js'
+import type { JSX, ParentComponent } from 'solid-js'
 
 interface DemoSectionProps {
 	title: string

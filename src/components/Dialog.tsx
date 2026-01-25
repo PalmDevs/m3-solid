@@ -1,10 +1,10 @@
+import { mergeRefs } from '@solid-primitives/refs'
 import { createEffect, Show, splitProps } from 'solid-js'
-import { mergeClasses } from '../utils'
+import { parseDuration } from '../animation'
 import shared from '../shared.module.css'
+import { mergeClasses } from '../utils'
 import styles from './Dialog.module.css'
 import type { JSX, JSXElement, ParentComponent } from 'solid-js'
-import { parseDuration } from '../animation'
-import { mergeRefs } from '@solid-primitives/refs'
 
 export interface DialogProps {
 	headline?: JSXElement
@@ -258,7 +258,7 @@ export const Dialog: ParentComponent<DialogProps> = props => {
 		<>
 			<div
 				{...local.backdropProps}
-				ref={mergeRefs(el => backdropRef = el, local.backdropProps?.ref)}
+				ref={mergeRefs(el => (backdropRef = el), local.backdropProps?.ref)}
 				class={mergeClasses(styles.backdrop, local.backdropProps?.class)}
 			/>
 			<dialog

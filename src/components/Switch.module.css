@@ -1,13 +1,31 @@
 .container {
-	--_track-color: var(--m3-switch-track-color, var(--m3c-surface-container-highest));
-	--_track-outline-color: var(--m3-switch-track-outline-color, var(--m3c-outline));
+	--_track-color: var(
+		--m3-switch-track-color,
+		var(--m3c-surface-container-highest)
+	);
+	--_track-outline-color: var(
+		--m3-switch-track-outline-color,
+		var(--m3c-outline)
+	);
 	--_track-shape: var(--m3-switch-track-shape, var(--m3-shape-full));
 	--_handle-color: var(--m3-switch-handle-color, var(--m3c-outline));
 	--_handle-shape: var(--m3-switch-handle-shape, var(--m3-shape-full));
-	--_selected-track-color: var(--m3-switch-selected-track-color, var(--m3c-primary));
-	--_selected-handle-color: var(--m3-switch-selected-handle-color, var(--m3c-on-primary));
-	--_icon-color: var(--m3-switch-icon-color, var(--m3c-surface-container-highest));
-	--_selected-icon-color: var(--m3-switch-selected-icon-color, var(--m3c-on-primary-container));
+	--_selected-track-color: var(
+		--m3-switch-selected-track-color,
+		var(--m3c-primary)
+	);
+	--_selected-handle-color: var(
+		--m3-switch-selected-handle-color,
+		var(--m3c-on-primary)
+	);
+	--_icon-color: var(
+		--m3-switch-icon-color,
+		var(--m3c-surface-container-highest)
+	);
+	--_selected-icon-color: var(
+		--m3-switch-selected-icon-color,
+		var(--m3c-on-primary-container)
+	);
 
 	display: inline-flex;
 	position: relative;
@@ -27,7 +45,10 @@
 		transition: var(--m3-easing);
 
 		&:disabled {
-			background-color: oklab(from var(--m3c-surface-container-highest) l a b / 0.12);
+			background-color: oklab(
+				from var(--m3c-surface-container-highest) l a b /
+				0.12
+			);
 			border-color: oklab(from var(--m3c-outline) l a b / 0.12);
 			cursor: auto;
 		}
