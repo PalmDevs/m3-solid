@@ -80,6 +80,10 @@
 	&:disabled {
 		color: var(--_disabled-input-color);
 	}
+
+	&:focus-visible {
+		animation: none;
+	}
 }
 
 .labelBase {
