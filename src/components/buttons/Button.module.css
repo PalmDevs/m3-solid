@@ -51,7 +51,6 @@
 
 /* Size variants */
 .xs {
-	composes: labelLarge from "../../shared.module.css";
 	--_height: var(--m3-button-container-height, 2rem);
 	height: var(--_height);
 	padding: 0 0.75rem;
@@ -68,7 +67,6 @@
 }
 
 .s {
-	composes: labelLarge from "../../shared.module.css";
 	--_height: var(--m3-button-container-height, 2.5rem);
 	height: var(--_height);
 	padding: 0 1rem;
@@ -85,7 +83,6 @@
 }
 
 .m {
-	composes: titleMedium from "../../shared.module.css";
 	--_height: var(--m3-button-container-height, 3.5rem);
 	height: var(--_height);
 	padding: 0 1.5rem;
@@ -102,7 +99,6 @@
 }
 
 .l {
-	composes: headlineSmall from "../../shared.module.css";
 	--_height: var(--m3-button-container-height, 6rem);
 	height: var(--_height);
 	padding: 0 3rem;
@@ -120,7 +116,6 @@
 }
 
 .xl {
-	composes: headlineLarge from "../../shared.module.css";
 	--_height: var(--m3-button-container-height, 8.5rem);
 	height: var(--_height);
 	padding: 0 4rem;

@@ -4,6 +4,7 @@ import { Icon } from '../Icon'
 import sharedStyles from './shared.module.css'
 import type { IconifyIcon } from '@iconify/types'
 import type { JSX } from 'solid-js'
+import { mergeClasses } from '../../utils'
 
 export type TextFieldVariant = 'outlined' | 'filled'
 
@@ -43,7 +44,11 @@ export const SupportingText = (props: {
 	return (
 		<p
 			id={props.id}
-			class={`${sharedStyles.supportingText} ${props.error ? sharedStyles.error : ''}`}
+			class={mergeClasses(
+				'm3-body-small',
+				sharedStyles.supportingText,
+				props.error && sharedStyles.error,
+			)}
 		>
 			{props.text}
 		</p>

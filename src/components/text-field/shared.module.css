@@ -18,7 +18,6 @@
 }
 
 .supportingText {
-	composes: bodySmall from "../../shared.module.css";
 	margin: 4px 16px 0 16px;
 	color: var(
 		--m3-text-field-supporting-text-color,

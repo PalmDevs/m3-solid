@@ -52,6 +52,21 @@ const getButtonIconSize = (size: ButtonSize) => {
 	}
 }
 
+const getButtonTextSize = (size: ButtonSize) => {
+	switch (size) {
+		case 'xs':
+			return 'm3-label-large'
+		case 's':
+			return 'm3-label-large'
+		case 'm':
+			return 'm3-title-medium'
+		case 'l':
+			return 'm3-headline-small'
+		case 'xl':
+			return 'm3-headline-large'
+	}
+}
+
 // TODO: On-by-default prop for corner radius change effect on tap
 export const Button: ParentComponent<ButtonProps> = props => {
 	const merged = mergeProps(
@@ -79,6 +94,7 @@ export const Button: ParentComponent<ButtonProps> = props => {
 		mergeClasses(
 			'm3-container',
 			'm3-ripple',
+			getButtonTextSize(local.size),
 			styles.container,
 			styles[local.size],
 			styles[local.variant],

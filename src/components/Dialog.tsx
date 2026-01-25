@@ -1,7 +1,6 @@
 import { mergeRefs } from '@solid-primitives/refs'
 import { createEffect, Show, splitProps } from 'solid-js'
 import { parseDuration } from '../animation'
-import shared from '../shared.module.css'
 import { mergeClasses } from '../utils'
 import styles from './Dialog.module.css'
 import type { JSX, JSXElement, ParentComponent } from 'solid-js'
@@ -280,14 +279,14 @@ export const Dialog: ParentComponent<DialogProps> = props => {
 					<h1
 						class={mergeClasses(
 							styles.headline,
-							shared.headlineSmall,
+							'm3-headline-small',
 							local.icon && styles.center,
 						)}
 					>
 						{local.headline}
 					</h1>
 				</Show>
-				<div class={mergeClasses(styles.content, shared.bodyMedium)}>
+				<div class={mergeClasses(styles.content, 'm3-body-medium')}>
 					{local.children}
 				</div>
 				<div ref={buttonsRef} class={styles.buttons}>

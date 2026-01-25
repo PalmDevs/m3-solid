@@ -13,9 +13,6 @@
 		"./styles.css": {
 			"default": "./src/styles.css"
 		},
-		"./shared.module.css": {
-			"default": "./src/shared.module.css"
-		},
 		"./themes/*.css": {
 			"default": "./src/themes/*.css"
 		}
