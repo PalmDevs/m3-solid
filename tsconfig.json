@@ -31,12 +31,7 @@
 		// Some stricter flags (disabled by default)
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
-		"noPropertyAccessFromIndexSignature": false,
-
-		// Path aliases
-		"paths": {
-			"~/*": ["./src/*"]
-		}
+		"noPropertyAccessFromIndexSignature": false
 	},
 	"include": ["src", "demo"]
 }
