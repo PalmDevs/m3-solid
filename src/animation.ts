@@ -23,32 +23,128 @@ export const parseSize = (size: string) =>
 
 export const parseDuration = (duration: string): number => {
 	const trimmed = duration.trim()
-	if (trimmed.endsWith('ms')) {
-		return parseFloat(trimmed)
-	} else if (trimmed.endsWith('s')) {
-		return parseFloat(trimmed) * 1000
-	}
-
+	if (trimmed.endsWith('ms')) return parseFloat(trimmed)
+	if (trimmed.endsWith('s')) return parseFloat(trimmed) * 1000
 	console.warn(`Unable to parse duration: ${duration}`)
 	return 0
 }
 
-export const parseColor = (color: string): [number, number, number, number] => {
-	const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/)
-	if (match) {
-		const [r, g, b, opacity = 1.0] = match
-			.slice(1, 5)
-			.map(val => val && parseFloat(val))
-		if (
-			typeof r === 'number' &&
-			typeof g === 'number' &&
-			typeof b === 'number' &&
-			typeof opacity === 'number'
-		) {
-			return [r, g, b, opacity]
-		}
+type RGBA = [number, number, number, number]
+
+export const parseColor = (color: string): RGBA => {
+	// rgba/rgb
+	let m = color.match(
+		/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?\)/,
+	)
+	if (m) return [+m[1]!, +m[2]!, +m[3]!, m[4] ? +m[4] : 1]
+
+	// oklab (including relative color syntax)
+	m = color.match(
+		/oklab\((?:from\s+[^)]+\s+)?([\d.]+%?)\s+([+-]?[\d.]+)\s+([+-]?[\d.]+)(?:\s*\/\s*([\d.]+%?))?\)/,
+	)
+	if (m) {
+		let L = +m[1]!,
+			a = +m[2]!,
+			b = +m[3]!,
+			alpha = m[4] ? +m[4] : 1
+		if (m[1]!.includes('%')) L /= 100
+		if (m[4]?.includes('%')) alpha /= 100
+		// oklab to linear RGB
+		const l_ = L + 0.3963377774 * a + 0.2158037573 * b
+		const m_ = L - 0.1055613458 * a - 0.0638541728 * b
+		const s_ = L - 0.0894841775 * a - 1.291485548 * b
+		const l = l_ * l_ * l_,
+			n = m_ * m_ * m_,
+			s = s_ * s_ * s_
+		const lin2srgb = (x: number) =>
+			x <= 0.0031308 ? x * 12.92 : 1.055 * x ** (1 / 2.4) - 0.055
+		const clamp = (x: number) =>
+			Math.round(Math.max(0, Math.min(255, lin2srgb(x) * 255)))
+		return [
+			clamp(4.0767416621 * l - 3.3077115913 * n + 0.2309699292 * s),
+			clamp(-1.2684380046 * l + 2.6097574011 * n - 0.3413193965 * s),
+			clamp(-0.0041960863 * l - 0.7034186147 * n + 1.707614701 * s),
+			alpha,
+		]
 	}
+
+	// color(srgb ...)
+	m = color.match(
+		/color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+%?))?\)/,
+	)
+	if (m) {
+		let alpha = m[4] ? +m[4] : 1
+		if (m[4]?.includes('%')) alpha /= 100
+		return [
+			Math.round(+m[1]! * 255),
+			Math.round(+m[2]! * 255),
+			Math.round(+m[3]! * 255),
+			alpha,
+		]
+	}
+
 	return [0, 0, 0, 0]
+}
+
+export interface ParsedBoxShadow {
+	inset: boolean
+	offsetX: number
+	offsetY: number
+	blur: number
+	spread: number
+	color: RGBA
+}
+
+const EMPTY_SHADOW: ParsedBoxShadow = {
+	inset: false,
+	offsetX: 0,
+	offsetY: 0,
+	blur: 0,
+	spread: 0,
+	color: [0, 0, 0, 0],
+}
+
+export const parseBoxShadow = (boxShadow: string): ParsedBoxShadow[] => {
+	if (!boxShadow || boxShadow === 'none') return []
+	return boxShadow.split(/,(?![^(]*\))/).map(part => {
+		const s = part.trim()
+		const colorMatch = s.match(
+			/(?:rgba?\([^)]+\)|oklab\([^)]+\)|color\([^)]+\))/,
+		)
+		const nums =
+			s
+				.replace(colorMatch?.[0] || '', '')
+				.match(/-?[\d.]+(?=px)/g)
+				?.map(Number) || []
+		return {
+			inset: s.includes('inset'),
+			offsetX: nums[0] || 0,
+			offsetY: nums[1] || 0,
+			blur: nums[2] || 0,
+			spread: nums[3] || 0,
+			color: colorMatch ? parseColor(colorMatch[0]) : [0, 0, 0, 0],
+		}
+	})
+}
+
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t
+const lerpColor = (a: RGBA, b: RGBA, t: number): RGBA =>
+	[0, 1, 2, 3].map(i => lerp(a[i]!, b[i]!, t)) as RGBA
+
+export const interpolateBoxShadow = (
+	start: ParsedBoxShadow[],
+	end: ParsedBoxShadow[],
+	t: number,
+): string => {
+	const len = Math.max(start.length, end.length)
+	if (!len) return 'none'
+	return Array.from({ length: len }, (_, i) => {
+		const s = start[i] || EMPTY_SHADOW,
+			e = end[i] || EMPTY_SHADOW
+		const c = lerpColor(s.color, e.color, t)
+		const inset = (t > 0.5 ? e : s).inset ? 'inset ' : ''
+		return `${inset}${lerp(s.offsetX, e.offsetX, t).toFixed(1)}px ${lerp(s.offsetY, e.offsetY, t).toFixed(1)}px ${lerp(s.blur, e.blur, t).toFixed(1)}px ${lerp(s.spread, e.spread, t).toFixed(1)}px rgba(${Math.round(c[0])},${Math.round(c[1])},${Math.round(c[2])},${c[3].toFixed(3)})`
+	}).join(', ')
 }
 
 const getBackgroundColor = (node: Element, defaultColor?: string): string => {
@@ -60,9 +156,9 @@ const getBackgroundColor = (node: Element, defaultColor?: string): string => {
 	}
 	const color = getComputedStyle(node).backgroundColor
 	if (color !== defaultColor) return color
-	if (node.parentElement)
-		return getBackgroundColor(node.parentElement, defaultColor)
-	return defaultColor
+	return node.parentElement
+		? getBackgroundColor(node.parentElement, defaultColor)
+		: defaultColor
 }
 
 export interface AnimationOptions {
@@ -77,8 +173,7 @@ export interface SharedAxisOptions extends AnimationOptions {
 	leaving?: boolean
 }
 
-// TODO: Shared axis transitions
-
+// TODO: shared axis transitions
 const _getSharedAxisStyles = (
 	progress: number,
 	options: SharedAxisOptions,
@@ -86,14 +181,10 @@ const _getSharedAxisStyles = (
 	const t = (options.easing || easeEmphasized)(progress)
 	const u = 1 - t
 	const opacity = Math.max(0, (t - 0.35) * (1 / 0.35))
-
 	if (options.direction === 'Z') {
 		const factor = options.leaving ? u * 0.1 + 1 : t * 0.2 + 0.8
-		let css = `transform: scale(${factor.toFixed(3)});`
-		if (!options.leaving) css += ` opacity: ${opacity.toFixed(3)};`
-		return css
+		return `transform: scale(${factor.toFixed(3)});${options.leaving ? '' : ` opacity: ${opacity.toFixed(3)};`}`
 	}
-
 	const factor = u * (options.rightSeam ? -30 : 30)
 	return `transform: translate${options.direction}(${factor.toFixed(3)}px); opacity: ${opacity.toFixed(3)}`
 }
@@ -105,47 +196,30 @@ export const animate = (
 	callback: (progress: number) => void,
 	options: AnimationOptions & { onComplete?: () => void } = {},
 ): (() => void) => {
-	const duration = options.duration || 500
-	const delay = options.delay || 0
-	const easing = options.easing || easeEmphasized
-	const onComplete = options.onComplete
-
-	let startTime: number | null = null
-	let rafId: number | null = null
-	let cancelled = false
+	const {
+		duration = 500,
+		delay = 0,
+		easing = easeEmphasized,
+		onComplete,
+	} = options
+	let startTime: number | null = null,
+		rafId: number | null = null,
+		cancelled = false
 
 	const tick = (time: number) => {
 		if (cancelled) return
-
-		if (!startTime) startTime = time
+		startTime ??= time
 		const elapsed = time - startTime - delay
-
-		if (elapsed < 0) {
-			rafId = requestAnimationFrame(tick)
-			return
-		}
-
+		if (elapsed < 0) return void (rafId = requestAnimationFrame(tick))
 		const progress = Math.min(1, elapsed / duration)
-		const easedProgress = easing(progress)
-		callback(easedProgress)
-
-		if (progress < 1) {
-			rafId = requestAnimationFrame(tick)
-		} else {
-			// Animation complete
-			if (onComplete) {
-				onComplete()
-			}
-		}
+		callback(easing(progress))
+		if (progress < 1) rafId = requestAnimationFrame(tick)
+		else onComplete?.()
 	}
-
 	rafId = requestAnimationFrame(tick)
-
 	return () => {
 		cancelled = true
-		if (rafId !== null) {
-			cancelAnimationFrame(rafId)
-		}
+		if (rafId) cancelAnimationFrame(rafId)
 	}
 }
 
@@ -185,13 +259,13 @@ export const containerTransform = (
 	endElement: HTMLElement,
 	options: ContainerTransformOptions = {},
 ): (() => void) => {
-	const duration = options.duration || 500
-	const easing = options.easing || easeEmphasized
-	const bgContainerZ = options.bgContainerZ || 1000
-	const fgContainerZ = options.fgContainerZ || 1001
-
-	startElement.style.visibility = 'hidden'
-	endElement.style.visibility = 'hidden'
+	const {
+		duration = 500,
+		easing = easeEmphasized,
+		bgContainerZ = 1000,
+		fgContainerZ = 1001,
+	} = options
+	startElement.style.visibility = endElement.style.visibility = 'hidden'
 
 	const startRect = startElement.getBoundingClientRect()
 	const endRect = endElement.getBoundingClientRect()
@@ -200,176 +274,137 @@ export const containerTransform = (
 
 	const startClone = startElement.cloneNode(true) as HTMLElement
 	const endClone = endElement.cloneNode(true) as HTMLElement
-
 	startClone.querySelectorAll('m3-ripple').forEach(el => el.remove())
 	endClone.querySelectorAll('m3-ripple').forEach(el => el.remove())
 
-	// For opacity control
 	const startWrapper = document.createElement('div')
 	const endWrapper = document.createElement('div')
-
 	startWrapper.appendChild(startClone)
 	endWrapper.appendChild(endClone)
 
-	const positionWrapper = (wrapper: HTMLElement, zIndex: number) => {
-		wrapper.style.position = 'fixed'
-		wrapper.style.top = `${startRect.top}px`
-		wrapper.style.left = `${startRect.left}px`
-		wrapper.style.width = `${startRect.width}px`
-		wrapper.style.height = `${startRect.height}px`
-		wrapper.style.margin = '0'
-		wrapper.style.pointerEvents = 'none'
-		wrapper.style.overflow = 'hidden'
-		wrapper.style.zIndex = zIndex.toString()
+	const setPos = (el: HTMLElement, z: number) =>
+		Object.assign(el.style, {
+			position: 'fixed',
+			top: `${startRect.top}px`,
+			left: `${startRect.left}px`,
+			width: `${startRect.width}px`,
+			height: `${startRect.height}px`,
+			margin: '0',
+			pointerEvents: 'none',
+			overflow: 'hidden',
+			zIndex: z,
+		})
+	setPos(startWrapper, fgContainerZ)
+	setPos(endWrapper, fgContainerZ + 1)
+
+	for (const [clone, opacity] of [
+		[startClone, '1'],
+		[endClone, '0'],
+	] as const) {
+		Object.assign(clone.style, {
+			position: 'relative',
+			top: '0',
+			left: '0',
+			width: '100%',
+			height: '100%',
+			margin: '0',
+			visibility: 'visible',
+			opacity,
+		})
 	}
 
-	positionWrapper(startWrapper, fgContainerZ)
-	positionWrapper(endWrapper, fgContainerZ + 1)
-
-	// Reset clone positioning to be relative to wrapper
-	startClone.style.position = 'relative'
-	startClone.style.top = '0'
-	startClone.style.left = '0'
-	startClone.style.width = '100%'
-	startClone.style.height = '100%'
-	startClone.style.margin = '0'
-	startClone.style.visibility = 'visible'
-	startClone.style.opacity = '1'
-
-	endClone.style.position = 'relative'
-	endClone.style.top = '0'
-	endClone.style.left = '0'
-	endClone.style.width = '100%'
-	endClone.style.height = '100%'
-	endClone.style.margin = '0'
-	endClone.style.visibility = 'visible'
-	endClone.style.opacity = '0'
-
-	// Background container for color and border interpolation
-	// Without this, the two clones will be a little transparent during fade
 	const bgContainer = document.createElement('div')
-	bgContainer.style.position = 'fixed'
-	bgContainer.style.zIndex = bgContainerZ.toString()
-	bgContainer.style.boxSizing = 'border-box'
-	bgContainer.style.borderStyle = 'solid'
-	bgContainer.style.pointerEvents = 'none'
+	Object.assign(bgContainer.style, {
+		position: 'fixed',
+		zIndex: bgContainerZ,
+		boxSizing: 'border-box',
+		borderStyle: 'solid',
+		pointerEvents: 'none',
+	})
 
 	const startColor = parseColor(getBackgroundColor(startElement))
 	const endColor = parseColor(getBackgroundColor(endElement))
 	const startRadius = parseSize(startStyle.borderRadius)
 	const endRadius = parseSize(endStyle.borderRadius)
-	const startBorderWidth = parseSize(startStyle.borderLeftWidth)
-	const endBorderWidth = parseSize(endStyle.borderLeftWidth)
-	const startBorderColor = parseColor(startStyle.borderLeftColor)
-	const endBorderColor = parseColor(endStyle.borderLeftColor)
+	const startBorderW = parseSize(startStyle.borderLeftWidth)
+	const endBorderW = parseSize(endStyle.borderLeftWidth)
+	const startBorderC = parseColor(startStyle.borderLeftColor)
+	const endBorderC = parseColor(endStyle.borderLeftColor)
+	const startShadow = parseBoxShadow(startStyle.boxShadow)
+	const endShadow = parseBoxShadow(endStyle.boxShadow)
 
 	const animationContainer = getAnimationContainer()
-	animationContainer.appendChild(bgContainer)
-	animationContainer.appendChild(startWrapper)
-	animationContainer.appendChild(endWrapper)
+	animationContainer.append(bgContainer, startWrapper, endWrapper)
 
-	const isEndElementLarger =
+	const isEndLarger =
 		endRect.width * endRect.height > startRect.width * startRect.height
+	const startFadeDelay =
+		(options.startElementFadeDelay ?? (isEndLarger ? 0 : 0.4)) / 2
+	const endFadeDelay =
+		(options.endElementFadeDelay ?? (isEndLarger ? 0.4 : 0.8)) / 2
 
-	// Usually smaller content would have a higher contrast (eg. FAB -> Card), so:
+	const updateFrame = (t: number) => {
+		const w = lerp(startRect.width, endRect.width, t)
+		const h = lerp(startRect.height, endRect.height, t)
+		const x = lerp(startRect.left, endRect.left, t)
+		const y = lerp(startRect.top, endRect.top, t)
+		const r = lerp(startRadius, endRadius, t)
+		const c = lerpColor(startColor, endColor, t)
+		const bc = lerpColor(startBorderC, endBorderC, t)
 
-	// Try to fade out smaller content earlier to reduce visual pop
-	const startCloneOpacityDelay = (options.startElementFadeDelay ?? (isEndElementLarger ? 0 : 0.4)) / 2
-	// Try to fade in smaller content later to reduce visual pop
-	const endCloneOpacityDelay = (options.endElementFadeDelay ?? (isEndElementLarger ? 0.4 : 0.8)) / 2
+		Object.assign(bgContainer.style, {
+			top: `${y}px`,
+			left: `${x}px`,
+			width: `${w}px`,
+			height: `${h}px`,
+			borderRadius: `${r}px`,
+			borderWidth: `${lerp(startBorderW, endBorderW, t)}px`,
+			backgroundColor: `rgba(${c.map(Math.round).join(',')})`,
+			borderColor: `rgba(${bc.map(Math.round).join(',')})`,
+			boxShadow: interpolateBoxShadow(startShadow, endShadow, t),
+		})
 
-	const updateFrame = (progress: number) => {
-		const t = progress
-		const u = 1 - t
+		for (const wrapper of [startWrapper, endWrapper]) {
+			Object.assign(wrapper.style, {
+				top: `${y}px`,
+				left: `${x}px`,
+				width: `${w}px`,
+				height: `${h}px`,
+				borderRadius: `${r}px`,
+			})
+		}
 
-		const currentWidth = u * startRect.width + t * endRect.width
-		const currentHeight = u * startRect.height + t * endRect.height
-		const currentLeft = u * startRect.left + t * endRect.left
-		const currentTop = u * startRect.top + t * endRect.top
-		const currentRadius = u * startRadius + t * endRadius
-
-		// Interpolate background container
-		bgContainer.style.top = `${currentTop}px`
-		bgContainer.style.left = `${currentLeft}px`
-		bgContainer.style.width = `${currentWidth}px`
-		bgContainer.style.height = `${currentHeight}px`
-		bgContainer.style.borderRadius = `${currentRadius}px`
-		bgContainer.style.borderWidth = `${u * startBorderWidth + t * endBorderWidth}px`
-
-		const interpColor = [0, 1, 2, 3].map(i =>
-			Math.round(u * (startColor[i] ?? 0) + t * (endColor[i] ?? 0)),
-		)
-		bgContainer.style.backgroundColor = `rgba(${interpColor.join(',')})`
-
-		const interpBorder = [0, 1, 2, 3].map(i =>
-			Math.round(u * (startBorderColor[i] ?? 0) + t * (endBorderColor[i] ?? 0)),
-		)
-		bgContainer.style.borderColor = `rgba(${interpBorder.join(',')})`
-
-		// Position and size both wrappers
-		startWrapper.style.top = `${currentTop}px`
-		startWrapper.style.left = `${currentLeft}px`
-		startWrapper.style.width = `${currentWidth}px`
-		startWrapper.style.height = `${currentHeight}px`
-		startWrapper.style.borderRadius = `${currentRadius}px`
-
-		endWrapper.style.top = `${currentTop}px`
-		endWrapper.style.left = `${currentLeft}px`
-		endWrapper.style.width = `${currentWidth}px`
-		endWrapper.style.height = `${currentHeight}px`
-		endWrapper.style.borderRadius = `${currentRadius}px`
-
-		// Scale content to maintain original layout and prevent text wrapping
-		const startScaleX = currentWidth / startRect.width
-		const startScaleY = currentHeight / startRect.height
-		const endScaleX = currentWidth / endRect.width
-		const endScaleY = currentHeight / endRect.height
-
-		startClone.style.transform = `scale(${startScaleX}, ${startScaleY})`
+		startClone.style.transform = `scale(${w / startRect.width}, ${h / startRect.height})`
 		startClone.style.transformOrigin = 'top left'
 		startClone.style.width = `${startRect.width}px`
 		startClone.style.height = `${startRect.height}px`
 
-		endClone.style.transform = `scale(${endScaleX}, ${endScaleY})`
+		endClone.style.transform = `scale(${w / endRect.width}, ${h / endRect.height})`
 		endClone.style.transformOrigin = 'top left'
 		endClone.style.width = `${endRect.width}px`
 		endClone.style.height = `${endRect.height}px`
 
-		// Start content fades out, end content fades in
 		startClone.style.opacity = Math.max(
 			0,
-			1 - Math.max(0, (t - startCloneOpacityDelay) * 2),
+			1 - Math.max(0, (t - startFadeDelay) * 2),
 		).toString()
 		endClone.style.opacity = Math.max(
 			0,
-			Math.min(1, (t - endCloneOpacityDelay) * 2),
+			Math.min(1, (t - endFadeDelay) * 2),
 		).toString()
 	}
 
-	// Run animation with completion callback
 	const cleanup = () => {
-		// Remove clones and wrappers
-		if (startWrapper.parentNode) animationContainer.removeChild(startWrapper)
-		if (endWrapper.parentNode) animationContainer.removeChild(endWrapper)
-		if (bgContainer.parentNode) animationContainer.removeChild(bgContainer)
-
-		// Only restore visibility on the end element (destination)
-		// Start element should remain hidden
+		startWrapper.remove()
+		endWrapper.remove()
+		bgContainer.remove()
 		endElement.style.visibility = ''
-
-		if (options.onComplete) {
-			options.onComplete()
-		}
+		options.onComplete?.()
 	}
 
-	const animationCleanup = animate(updateFrame, {
-		duration,
-		easing,
-		onComplete: cleanup,
-	})
-
+	const cancel = animate(updateFrame, { duration, easing, onComplete: cleanup })
 	return () => {
-		animationCleanup()
+		cancel()
 		cleanup()
 	}
 }
