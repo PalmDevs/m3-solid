@@ -81,6 +81,7 @@ export const Chip: Component<ChipProps> = props => {
 						</button>
 					}
 				>
+					{/* @ts-expect-error: Bad types */}
 					<label class={classNames()} for={local.labelFor}>
 						{content}
 					</label>
