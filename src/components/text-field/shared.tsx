@@ -4,12 +4,12 @@ import { mergeClasses } from '../../utils'
 import { Icon } from '../Icon'
 import sharedStyles from './shared.module.css'
 import type { IconifyIcon } from '@iconify/types'
-import type { JSX } from 'solid-js'
+import type { JSX, JSXElement } from 'solid-js'
 
 export type TextFieldVariant = 'outlined' | 'filled'
 
 export interface BaseTextFieldProps {
-	label: string
+	label: JSXElement
 	/**
 	 * If `true`, the text field will be displayed in an error state.
 	 *
@@ -17,7 +17,7 @@ export interface BaseTextFieldProps {
 	 */
 	error?: boolean
 	value?: string
-	supportingText?: string
+	supportingText?: JSXElement
 	variant?: TextFieldVariant
 	/**
 	 * Callback fired when the input is invalid. Error states are usually automatically handled.
@@ -37,7 +37,7 @@ export interface BaseTextFieldProps {
 }
 
 export const SupportingText = (props: {
-	text: string
+	text: JSXElement
 	error?: boolean
 	id: string
 }) => {

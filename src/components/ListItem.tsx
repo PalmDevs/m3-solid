@@ -5,9 +5,9 @@ import type { JSX, JSXElement, ParentComponent } from 'solid-js'
 
 export interface ListItemProps {
 	leading?: JSXElement
-	overline?: string
-	headline?: string
-	supporting?: string
+	overline?: JSXElement
+	headline?: JSXElement
+	supporting?: JSXElement
 	trailing?: JSXElement
 	lines?: number
 	href?: string

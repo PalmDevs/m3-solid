@@ -9,12 +9,12 @@ import {
 } from 'solid-js'
 import { mergeClasses } from '../../utils'
 import styles from './Tabs.module.css'
-import type { JSX, ParentComponent } from 'solid-js'
+import type { JSX, JSXElement, ParentComponent } from 'solid-js'
 
 // TODO: Icon
 
 export interface TabItem {
-	label: string
+	label: JSXElement
 	value: string
 }
 

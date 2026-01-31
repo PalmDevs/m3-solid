@@ -8,10 +8,10 @@ import {
 } from 'solid-js'
 import { mergeClasses } from '../../utils'
 import styles from './Tabs.module.css'
-import type { Component } from 'solid-js'
+import type { Component, JSXElement } from 'solid-js'
 
 export interface TabLinkItem {
-	label: string
+	label: JSXElement
 	href: string
 }
 
