@@ -14,14 +14,11 @@ import filledStyles from './FilledTextField.module.css'
 import outlinedStyles from './OutlinedTextField.module.css'
 import { FieldContent, SupportingText } from './shared'
 import sharedStyles from './shared.module.css'
-import type { Component, JSX } from 'solid-js'
+import type { Component, ComponentProps, JSX } from 'solid-js'
 import type { BaseTextFieldProps } from './shared'
 
 export interface TextFieldProps
-	extends Omit<
-			JSX.InputHTMLAttributes<HTMLInputElement>,
-			'onInvalid' | 'value'
-		>,
+	extends Omit<ComponentProps<'input'>, 'onInvalid' | 'value'>,
 		BaseTextFieldProps {}
 
 export const TextField: Component<TextFieldProps> = props => {

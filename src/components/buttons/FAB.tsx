@@ -3,7 +3,7 @@ import { mergeClasses } from '../../utils'
 import { Icon } from '../Icon'
 import styles from './FAB.module.css'
 import type { IconifyIcon } from '@iconify/types'
-import type { Component, JSX, JSXElement } from 'solid-js'
+import type { Component, ComponentProps, JSXElement } from 'solid-js'
 
 type FABSize = 'small' | 'normal' | 'medium' | 'large'
 type FABColor =
@@ -15,7 +15,7 @@ type FABColor =
 	| 'tertiary'
 type FABElevation = 'normal' | 'lowered' | 'none'
 
-export interface FABProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface FABProps extends ComponentProps<'button'> {
 	icon?: IconifyIcon
 	text?: JSXElement
 	size?: FABSize

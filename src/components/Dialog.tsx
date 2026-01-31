@@ -3,7 +3,7 @@ import { createEffect, Show, splitProps } from 'solid-js'
 import { parseDuration } from '../animation'
 import { mergeClasses } from '../utils'
 import styles from './Dialog.module.css'
-import type { JSX, JSXElement, ParentComponent } from 'solid-js'
+import type { ComponentProps, JSXElement, ParentComponent } from 'solid-js'
 
 export interface DialogProps {
 	headline?: JSXElement
@@ -22,7 +22,7 @@ export interface DialogProps {
 	actions: JSXElement
 	class?: string
 	quick?: boolean
-	backdropProps?: JSX.HTMLAttributes<HTMLDivElement>
+	backdropProps?: ComponentProps<'div'>
 }
 
 const cancelAnimations = (...elements: HTMLElement[]) => {

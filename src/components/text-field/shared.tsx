@@ -1,10 +1,10 @@
 import ErrorIcon from '@iconify-icons/mdi/error'
 import { Show } from 'solid-js'
+import { mergeClasses } from '../../utils'
 import { Icon } from '../Icon'
 import sharedStyles from './shared.module.css'
 import type { IconifyIcon } from '@iconify/types'
 import type { JSX } from 'solid-js'
-import { mergeClasses } from '../../utils'
 
 export type TextFieldVariant = 'outlined' | 'filled'
 

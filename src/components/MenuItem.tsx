@@ -3,10 +3,9 @@ import { mergeClasses } from '../utils'
 import { Icon } from './Icon'
 import styles from './MenuItem.module.css'
 import type { IconifyIcon } from '@iconify/types'
-import type { JSX, ParentComponent } from 'solid-js'
+import type { ComponentProps, ParentComponent } from 'solid-js'
 
-export interface MenuItemProps
-	extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface MenuItemProps extends ComponentProps<'button'> {
 	icon?: IconifyIcon | 'space'
 }
 

@@ -1,10 +1,9 @@
 import { mergeProps, splitProps } from 'solid-js'
 import { mergeClasses } from '../../utils'
 import styles from './LoadingIndicator.module.css'
-import type { Component, JSX } from 'solid-js'
+import type { Component, ComponentProps } from 'solid-js'
 
-export interface LoadingIndicatorProps
-	extends JSX.SvgSVGAttributes<SVGSVGElement> {
+export interface LoadingIndicatorProps extends ComponentProps<'svg'> {
 	size?: number
 	container?: boolean
 	center?: boolean

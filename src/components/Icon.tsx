@@ -1,8 +1,8 @@
 import { splitProps } from 'solid-js'
 import type { IconifyIcon } from '@iconify/types'
-import type { Component, JSX } from 'solid-js'
+import type { Component, ComponentProps } from 'solid-js'
 
-export interface IconProps extends JSX.SvgSVGAttributes<SVGSVGElement> {
+export interface IconProps extends ComponentProps<'svg'> {
 	icon: IconifyIcon
 	size?: number
 }

@@ -4,10 +4,10 @@ import { createSignal, onCleanup, onMount, Show, splitProps } from 'solid-js'
 import { mergeClasses } from '../utils'
 import { Icon } from './Icon'
 import styles from './Switch.module.css'
-import type { JSX, ParentComponent } from 'solid-js'
+import type { ComponentProps, ParentComponent } from 'solid-js'
 
 export interface SwitchProps
-	extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'type' | 'onChange'> {
+	extends Omit<ComponentProps<'input'>, 'type' | 'onChange'> {
 	checked?: boolean
 	onChange?: (checked: boolean) => void
 	icons?: 'checked' | 'both' | 'none'

@@ -13,14 +13,11 @@ import filledStyles from './FilledTextField.module.css'
 import outlinedStyles from './OutlinedTextField.module.css'
 import { FieldContent, SupportingText } from './shared'
 import sharedStyles from './shared.module.css'
-import type { Component, JSX } from 'solid-js'
+import type { Component, ComponentProps, JSX } from 'solid-js'
 import type { BaseTextFieldProps } from './shared'
 
 export interface TextFieldMultilineProps
-	extends Omit<
-			JSX.TextareaHTMLAttributes<HTMLTextAreaElement>,
-			'onInvalid' | 'value'
-		>,
+	extends Omit<ComponentProps<'textarea'>, 'onInvalid' | 'value'>,
 		BaseTextFieldProps {}
 
 export const TextFieldMultiline: Component<TextFieldMultilineProps> = props => {

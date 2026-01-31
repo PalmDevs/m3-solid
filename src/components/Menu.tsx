@@ -1,8 +1,8 @@
 import { mergeClasses } from '../utils'
 import styles from './Menu.module.css'
-import type { JSX, ParentComponent } from 'solid-js'
+import type { ComponentProps, ParentComponent } from 'solid-js'
 
-export interface MenuProps extends JSX.HTMLAttributes<HTMLDivElement> {}
+export interface MenuProps extends ComponentProps<'div'> {}
 
 export const Menu: ParentComponent<MenuProps> = props => {
 	return (

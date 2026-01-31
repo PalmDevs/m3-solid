@@ -4,7 +4,7 @@ import { mergeClasses } from '../../utils'
 import { Icon } from '../Icon'
 import styles from './Button.module.css'
 import type { IconifyIcon } from '@iconify/types'
-import type { JSX, ParentComponent } from 'solid-js'
+import type { ComponentProps, ParentComponent } from 'solid-js'
 
 export type ButtonVariant =
 	| 'elevated'
@@ -29,11 +29,11 @@ interface CommonButtonProps {
 
 export type ButtonProps =
 	| (CommonButtonProps &
-			JSX.ButtonHTMLAttributes<HTMLButtonElement> & {
+			ComponentProps<'button'> & {
 				href?: undefined
 			})
 	| (CommonButtonProps &
-			JSX.AnchorHTMLAttributes<HTMLAnchorElement> & {
+			ComponentProps<'a'> & {
 				href: string
 			})
 

@@ -1,9 +1,8 @@
 import { mergeProps, splitProps } from 'solid-js'
 import styles from './CircularProgress.module.css'
-import type { Component, JSX } from 'solid-js'
+import type { Component, ComponentProps } from 'solid-js'
 
-export interface CircularProgressProps
-	extends JSX.SvgSVGAttributes<SVGSVGElement> {
+export interface CircularProgressProps extends ComponentProps<'svg'> {
 	percent: number
 	size?: number
 	thickness?: number
