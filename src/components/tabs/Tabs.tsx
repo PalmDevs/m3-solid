@@ -9,7 +9,7 @@ import {
 } from 'solid-js'
 import { mergeClasses } from '../../utils'
 import styles from './Tabs.module.css'
-import type { ParentComponent } from 'solid-js'
+import type { JSX, ParentComponent } from 'solid-js'
 
 // TODO: Icon
 
@@ -25,6 +25,7 @@ export interface TabsProps {
 	scrollable?: boolean
 	name?: string
 	class?: string
+	style?: JSX.CSSProperties
 }
 
 export const Tabs: ParentComponent<TabsProps> = props => {
@@ -37,6 +38,7 @@ export const Tabs: ParentComponent<TabsProps> = props => {
 		'name',
 		'class',
 		'children',
+		'style',
 	])
 
 	const groupName = local.name || createUniqueId()
@@ -116,6 +118,7 @@ export const Tabs: ParentComponent<TabsProps> = props => {
 
 	return (
 		<div
+			style={local.style}
 			ref={containerRef}
 			class={mergeClasses(
 				'm3-container',
