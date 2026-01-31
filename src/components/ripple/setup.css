@@ -40,9 +40,12 @@ label:has(> input:disabled).m3-ripple::after {
 }
 
 @media (hover: hover) {
-	:hover.m3-ripple::after,
-	:active.m3-ripple::after {
+	:hover.m3-ripple::after {
 		opacity: 0.08;
+	}
+
+	:active.m3-ripple::after {
+		opacity: 0.12;
 	}
 }
 
