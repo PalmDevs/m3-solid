@@ -58,10 +58,7 @@ export const TextField: Component<TextFieldProps> = props => {
 
 			form.addEventListener('submit', tryClearError)
 			onCleanup(() => form.removeEventListener('submit', tryClearError))
-		} else
-			console.warn(
-				'TextField is not inside a form element. This is likely not intended.',
-			)
+		}
 	})
 
 	// Whether we should be controlling the states internally
