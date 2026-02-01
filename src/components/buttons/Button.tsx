@@ -37,11 +37,12 @@ export type ButtonProps =
 				href: string
 			})
 
-const getButtonIconSize = (size: ButtonSize) => {
+const getButtonIconSize = (size: ButtonSize, iconOnly: boolean) => {
 	switch (size) {
 		case 'xs':
 			return 20
 		case 's':
+			if (iconOnly) return 24
 			return 20
 		case 'm':
 			return 24
@@ -113,7 +114,10 @@ export const Button: ParentComponent<ButtonProps> = props => {
 			{...others}
 		>
 			<Show when={local.iconType !== 'left' && local.icon}>
-				<Icon icon={local.icon!} size={getButtonIconSize(local.size)} />
+				<Icon
+					icon={local.icon!}
+					size={getButtonIconSize(local.size, local.iconType === 'only')}
+				/>
 			</Show>
 			{local.children}
 		</Dynamic>

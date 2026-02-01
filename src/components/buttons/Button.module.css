@@ -235,6 +235,10 @@
 			var(--m3c-on-surface-variant)
 		);
 	}
+
+	&.icon-only {
+		color: var(--m3c-on-surface-variant);
+	}
 }
 
 /* Accessibility */
