@@ -53,6 +53,13 @@
 		padding-bottom: 0.75rem;
 		align-items: flex-start;
 	}
+
+	&.lines-4-and-up {
+		height: auto;
+		padding-top: 0.75rem;
+		padding-bottom: 0.75rem;
+		align-items: flex-start;
+	}
 }
 
 button.container,

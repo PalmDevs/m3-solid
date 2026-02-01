@@ -13,7 +13,7 @@ export interface ListItemProps {
 	href?: string
 	onClick?: JSX.EventHandler<HTMLElement, MouseEvent>
 	/**
-	 * Whether to render the list item as a <label> element.
+	 * Whether to render the list item as a `<label>` element.
 	 * Useful when the list item contains form elements.
 	 */
 	label?: boolean
@@ -45,9 +45,9 @@ export const ListItem: ParentComponent<ListItemProps> = props => {
 	const classNames = () =>
 		mergeClasses(
 			'm3-container',
-			'm3-ripple',
+			local.href || local.onClick ? 'm3-ripple' : undefined,
 			styles.container,
-			styles[`lines-${computedLines()}`],
+			styles[`lines-${computedLines() > 3 ? '4-and-up' : computedLines()}`],
 			local.class,
 		)
 
