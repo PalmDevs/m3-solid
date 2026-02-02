@@ -1,24 +1,41 @@
 import { Show, splitProps } from 'solid-js'
 import { mergeClasses } from '../utils'
 import styles from './ListItem.module.css'
-import type { JSX, JSXElement, ParentComponent } from 'solid-js'
+import type { ComponentProps, JSX, JSXElement, ParentComponent } from 'solid-js'
 
-export interface ListItemProps {
-	leading?: JSXElement
-	overline?: JSXElement
-	headline?: JSXElement
-	supporting?: JSXElement
-	trailing?: JSXElement
-	lines?: number
-	href?: string
-	onClick?: JSX.EventHandler<HTMLElement, MouseEvent>
-	/**
-	 * Whether to render the list item as a `<label>` element.
-	 * Useful when the list item contains form elements.
-	 */
-	label?: boolean
-	class?: string
-}
+export type ListItemProps = {
+    leading?: JSXElement
+    overline?: JSXElement
+    headline?: JSXElement
+    supporting?: JSXElement
+    trailing?: JSXElement
+    lines?: number
+} & (
+    | ({
+            onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent>
+            href?: never
+            label?: never
+      } & ComponentProps<'button'>)
+    | ({
+            href: string
+            onClick?: never
+            label?: never
+      } & ComponentProps<'a'>)
+    | ({
+            onClick?: never
+            href?: never
+            label?: never
+      } & ComponentProps<'div'>)
+    | ({
+			/**
+	 		* Whether to render the list item as a `<label>` element.
+	 		* Useful when the list item contains form elements.
+	 		*/
+            label: true
+            onClick?: never
+            href?: never
+      } & ComponentProps<'label'>)
+)
 
 export const ListItem: ParentComponent<ListItemProps> = props => {
 	const [local, others] = splitProps(props, [
@@ -82,19 +99,29 @@ export const ListItem: ParentComponent<ListItemProps> = props => {
 							<Show
 								when={local.label}
 								fallback={
-									<div class={classNames()} {...others}>
+									<div
+										{...(others as JSX.HTMLAttributes<HTMLDivElement>)}
+										class={classNames()}
+									>
 										{renderContent()}
 									</div>
 								}
 							>
 								{/** biome-ignore lint/a11y/noLabelWithoutControl: Should be passed in ...others */}
-								<label class={classNames()} {...others}>
+								<label
+									{...(others as JSX.LabelHTMLAttributes<HTMLLabelElement>)}
+									class={classNames()}
+								>
 									{renderContent()}
 								</label>
 							</Show>
 						}
 					>
-						<a href={local.href} class={classNames()} {...others}>
+						<a
+							{...(others as JSX.AnchorHTMLAttributes<HTMLAnchorElement>)}
+							href={local.href}
+							class={classNames()}
+						>
 							{renderContent()}
 						</a>
 					</Show>
@@ -102,9 +129,9 @@ export const ListItem: ParentComponent<ListItemProps> = props => {
 			>
 				<button
 					type="button"
+					{...(others as JSX.ButtonHTMLAttributes<HTMLButtonElement>)}
 					class={classNames()}
 					onClick={local.onClick}
-					{...others}
 				>
 					{renderContent()}
 				</button>
