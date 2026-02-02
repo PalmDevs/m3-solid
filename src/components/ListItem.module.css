@@ -75,12 +75,6 @@ label.container {
 .trailing {
 	display: contents;
 	color: var(--_leading-icon-color);
-
-	& :global(svg) {
-		width: var(--m3-list-item-leading-icon-size, 1.5rem);
-		height: var(--m3-list-item-leading-icon-size, 1.5rem);
-		flex-shrink: 0;
-	}
 }
 
 .trailing {
@@ -89,12 +83,6 @@ label.container {
 	line-height: var(--m3-list-item-trailing-line-height, 1.455);
 	font-weight: var(--m3-list-item-trailing-weight, 500);
 	color: var(--_trailing-text-color);
-
-	& :global(svg) {
-		color: var(--_trailing-icon-color);
-		width: var(--m3-list-item-trailing-icon-size, 1.5rem);
-		height: var(--m3-list-item-trailing-icon-size, 1.5rem);
-	}
 }
 
 .supporting {

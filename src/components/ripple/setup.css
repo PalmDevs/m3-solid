@@ -2,9 +2,8 @@ m3-ripple,
 .m3-ripple-svg {
 	position: absolute;
 	inset: 0px;
-	/* TODO: Currently ListItem styles conflict with this. Fix this */
-	width: 100% !important;
-	height: 100% !important;
+	width: 100%;
+	height: 100%;
 	overflow: hidden;
 	border-radius: inherit;
 	pointer-events: none;
