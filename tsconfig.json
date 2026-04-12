@@ -8,7 +8,6 @@
 		"jsx": "preserve",
 		"jsxImportSource": "solid-js",
 		"allowJs": true,
-		"baseUrl": ".",
 
 		// Bundler mode
 		"moduleResolution": "bundler",

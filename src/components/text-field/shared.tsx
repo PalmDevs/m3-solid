@@ -65,7 +65,6 @@ export const FieldContent = (
 	return (
 		<>
 			<div class={props.styles.layer}></div>
-			{/* @ts-expect-error: Bad types */}
 			<label class={sharedStyles.labelBase} for={props.inputId}>
 				{props.label}
 			</label>
