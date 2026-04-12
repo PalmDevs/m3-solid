@@ -1,9 +1,9 @@
-import { mergeRefs } from '@solid-primitives/refs'
-import { createEffect, Show, splitProps } from 'solid-js'
-import { parseDuration } from '../animation'
-import { mergeClasses } from '../utils'
-import styles from './Dialog.module.css'
-import type { ComponentProps, JSXElement, ParentComponent } from 'solid-js'
+import { mergeRefs } from '@solid-primitives/refs';
+import { createEffect, Show, splitProps } from 'solid-js';
+import { parseDuration } from '../animation';
+import { mergeClasses } from '../utils';
+import styles from './Dialog.module.css';
+import type { ComponentProps, JSXElement, ParentComponent } from 'solid-js';
 
 export interface DialogProps {
 	headline?: JSXElement
@@ -264,6 +264,7 @@ export const Dialog: ParentComponent<DialogProps> = props => {
 				ref={dialogRef}
 				on:cancel={e => {
 					e.preventDefault()
+					if (e.target !== dialogRef) return
 					handleClose()
 				}}
 				class={getClasses()}
