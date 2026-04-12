@@ -27,3 +27,5 @@ export * from './components/tabs/TabsLink'
 export * from './components/text-field/TextField'
 export * from './components/text-field/TextFieldMultiline'
 // #endregion
+
+import './styles.css'
