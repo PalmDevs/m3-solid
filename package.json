@@ -3,15 +3,13 @@
 	"version": "0.1.0",
 	"description": "Material Design 3 components for SolidJS",
 	"type": "module",
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
-			"default": "./src/index.ts"
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts"
 		},
 		"./styles.css": {
-			"default": "./src/styles.css"
+			"default": "./dist/styles.css"
 		},
 		"./themes/*.css": {
 			"default": "./src/themes/*.css"
