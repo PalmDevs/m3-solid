@@ -26,6 +26,9 @@ export * from './components/tabs/Tabs'
 export * from './components/tabs/TabsLink'
 export * from './components/text-field/TextField'
 export * from './components/text-field/TextFieldMultiline'
+export * from './components/nav/NavigationRail'
+export * from './components/nav/NavigationRailItem'
+export * from './components/nav/NavigationRailToggle'
 // #endregion
 
 import './styles.css'
