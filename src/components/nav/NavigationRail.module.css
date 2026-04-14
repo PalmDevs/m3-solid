@@ -1,0 +1,134 @@
+.backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: 9;
+	background-color: oklab(from var(--m3c-scrim) l a b / 0.5);
+	transition: opacity var(--m3-easing);
+}
+
+.top {
+	margin-inline: 20px;
+	display: flex;
+	flex-direction: column;
+	z-index: 1;
+}
+
+.items {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	width: 96px;
+	height: 100%;
+	align-self: stretch;
+	transition:
+		gap var(--m3-easing),
+		width 0.2s;
+}
+
+.wrapper {
+	position: relative;
+	width: 96px;
+	height: 100%;
+	transition: width var(--m3-easing-spatial);
+
+	&:has(> .rail.open:not(.modal)) {
+		width: 220px;
+	}
+
+	&:has(> .rail.collapse),
+	&:has(> .rail.modal) {
+		width: 0;
+	}
+}
+
+.rail {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+	width: 96px;
+	height: 100%;
+	padding: 44px 0 56px 0;
+	transition: all var(--m3-easing-spatial);
+	overflow: hidden;
+	overflow-y: auto;
+	scrollbar-width: none;
+
+	&.open {
+		width: 220px;
+		gap: 32px;
+	}
+
+	&.icon {
+		gap: 32px;
+	}
+
+	&:not(.modal) {
+		background: var(--m3c-surface-container);
+	}
+
+	&.collapse {
+		width: 220px;
+
+		& > .top {
+			margin-top: 56px;
+		}
+
+		&:not(.open) {
+			width: 0px;
+
+			& > :global(*:not(.top)),
+			& .top > :global(*:not(.toggle)) {
+				pointer-events: none;
+			}
+
+			& > .top > :global(*:not(.toggle)),
+			& > .items {
+				opacity: 0;
+			}
+		}
+	}
+
+	&.modal {
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: 100%;
+		z-index: 10;
+		border-start-end-radius: var(--m3-shape-large);
+		border-end-end-radius: var(--m3-shape-large);
+
+		&.open {
+			background: var(--m3c-surface-container);
+		}
+	}
+
+	&.open > .items,
+	&.collapse > .items {
+		gap: 0;
+		width: 220px;
+	}
+
+	&.icon > .items {
+		gap: 0;
+	}
+
+	&.centered > .items {
+		justify-content: center;
+	}
+
+	& + .backdrop {
+		opacity: 1;
+	}
+
+	&:not(.open) + .backdrop {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	@media (width <= 300px) {
+		&.open {
+			border-radius: 0;
+			width: 100vw;
+		}
+	}
+}

@@ -17,6 +17,7 @@ import {
 	TabsDemo,
 	TextFieldDemo,
 } from './demos'
+import { NavigationRailDemo } from './demos/NavigationRailDemo'
 
 function App() {
 	return (
@@ -40,6 +41,7 @@ function App() {
 				<TextFieldDemo />
 				<ProgressDemo />
 				<LoadingIndicatorDemo />
+				<NavigationRailDemo />
 			</main>
 		</div>
 	)
