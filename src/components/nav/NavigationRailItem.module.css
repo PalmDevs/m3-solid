@@ -68,10 +68,14 @@
 		width: 24px;
 		height: 24px;
 		transition: margin var(--m3-easing);
-		color: var(--m3c-on-secondary-container);
+		color: var(--m3c-on-surface-variant);
 		position: relative;
 		/* Explicit base value for SVG margin */
 		margin: 0px;
+		
+		.active & {
+			color: var(--m3c-on-secondary-container);
+		}
 	}
 }
 
