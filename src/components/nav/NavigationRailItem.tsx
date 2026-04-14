@@ -39,6 +39,7 @@ export const NavigationRailItem = (props: NavigationRailItemProps) => {
 	})
 
 	return (
+		// @ts-expect-error: Dynamic component with conditional tag
 		<Dynamic
 			ref={ref}
 			component={isLink() ? 'a' : 'button'}
