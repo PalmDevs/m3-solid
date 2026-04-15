@@ -1,7 +1,8 @@
-import HomeIcon from '@iconify-icons/mdi/home'
-import SearchIcon from '@iconify-icons/mdi/magnify'
+/** biome-ignore-all lint/a11y/noLabelWithoutControl: It's a demo! */
 import BookmarkIcon from '@iconify-icons/mdi/bookmark'
 import SettingsIcon from '@iconify-icons/mdi/cog'
+import HomeIcon from '@iconify-icons/mdi/home'
+import SearchIcon from '@iconify-icons/mdi/magnify'
 import AddIcon from '@iconify-icons/mdi/plus'
 import { createSignal } from 'solid-js'
 import { Button, FAB, Switch } from '../../src'

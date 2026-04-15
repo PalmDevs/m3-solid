@@ -1,13 +1,19 @@
-import iconMenuOpen from '@iconify-icons/mdi/menu-open'
-import iconMenu from '@iconify-icons/mdi/menu'
+import MenuIcon from '@iconify-icons/mdi/menu'
+import MenuOpenIcon from '@iconify-icons/mdi/menu-open'
+import { splitProps } from 'solid-js'
 import { mergeClasses } from '../../utils'
-import { Icon } from '../Icon'
+import { Button } from '../buttons/Button'
 import styles from './NavigationRailToggle.module.css'
-import type { Component } from 'solid-js'
+import type { Component, JSX } from 'solid-js'
+import type { ButtonProps } from '../buttons/Button'
 
 export type NavigationRailToggleMode = 'detached' | 'inline' | 'inline-detached'
 
-export interface NavigationRailToggleProps {
+export interface NavigationRailToggleProps
+	extends Omit<
+		Extract<ButtonProps, JSX.HTMLAttributes<HTMLButtonElement>>,
+		'iconType' | 'onChange'
+	> {
 	open: boolean
 	onChange: (open: boolean) => void
 	mode?: NavigationRailToggleMode
@@ -16,30 +22,38 @@ export interface NavigationRailToggleProps {
 export const NavigationRailToggle: Component<
 	NavigationRailToggleProps
 > = props => {
-	const mode = () => props.mode ?? 'detached'
+	const [local, others] = splitProps(props, [
+		'open',
+		'onChange',
+		'mode',
+		'class',
+	])
+
+	const mode = () => local.mode ?? 'detached'
 
 	const shouldHaveId = () => {
-		if (mode() === 'detached') return !props.open
-		if (mode() === 'inline-detached') return props.open
+		if (mode() === 'detached') return !local.open
+		if (mode() === 'inline-detached') return local.open
 		return true // 'inline'
 	}
 
 	return (
-		<button
+		<Button
+			variant="text"
+			size="m"
+			icon={local.open ? MenuOpenIcon : MenuIcon}
+			iconType="only"
+			id={shouldHaveId() ? 'm3-navigationtoggle' : undefined}
 			class={mergeClasses(
 				styles.toggle,
 				mode() !== 'inline' && styles.detached,
 				mode() === 'inline-detached' && styles.inline,
-				props.open && styles.open,
+				local.open && styles.open,
 			)}
-			id={shouldHaveId() ? 'm3-navigationtoggle' : undefined}
-			title={props.open ? 'Close menu' : 'Open menu'}
-			type="button"
 			aria-haspopup="true"
 			aria-controls="menu"
-			onClick={() => props.onChange(!props.open)}
-		>
-			<Icon icon={props.open ? iconMenuOpen : iconMenu} size={24} />
-		</button>
+			onClick={() => local.onChange(!local.open)}
+			{...others}
+		/>
 	)
 }

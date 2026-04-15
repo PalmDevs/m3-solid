@@ -1,16 +1,15 @@
 .backdrop {
 	position: fixed;
 	inset: 0;
-	z-index: 9;
 	background-color: oklab(from var(--m3c-scrim) l a b / 0.5);
 	transition: opacity var(--m3-easing);
 }
 
 .top {
-	margin-inline: 20px;
 	display: flex;
 	flex-direction: column;
-	z-index: 1;
+	margin-inline: 20px;
+	gap: 4px;
 }
 
 .items {
@@ -93,7 +92,7 @@
 		left: 0;
 		top: 0;
 		height: 100%;
-		z-index: 10;
+		z-index: 1;
 		border-start-end-radius: var(--m3-shape-large);
 		border-end-end-radius: var(--m3-shape-large);
 

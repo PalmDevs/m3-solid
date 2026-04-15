@@ -1,10 +1,11 @@
 import { mergeProps, onCleanup, onMount, Show, splitProps } from 'solid-js'
 import { mergeClasses } from '../../utils'
-import { NavigationRailToggle } from './NavigationRailToggle'
 import styles from './NavigationRail.module.css'
-import type { JSXElement, ParentComponent } from 'solid-js'
+import { NavigationRailToggle } from './NavigationRailToggle'
+import type { ComponentProps, JSXElement, ParentComponent } from 'solid-js'
 
-export interface NavigationRailProps {
+export interface NavigationRailProps
+	extends Omit<ComponentProps<'nav'>, 'onChange'> {
 	open: boolean
 	onChange: (open: boolean) => void
 	collapse?: 'normal' | 'full' | 'no' | boolean
@@ -27,7 +28,7 @@ export const NavigationRail: ParentComponent<NavigationRailProps> = props => {
 		props,
 	)
 
-	const [local] = splitProps(merged, [
+	const [local, others] = splitProps(merged, [
 		'open',
 		'onChange',
 		'collapse',
@@ -37,6 +38,7 @@ export const NavigationRail: ParentComponent<NavigationRailProps> = props => {
 		'fill',
 		'fab',
 		'children',
+		'class',
 	])
 
 	const showCollapse = () => local.collapse !== 'no' && local.collapse !== false
@@ -56,7 +58,7 @@ export const NavigationRail: ParentComponent<NavigationRailProps> = props => {
 
 	return (
 		<div class={mergeClasses('m3-container', styles.wrapper)}>
-			<div
+			<nav
 				class={mergeClasses(
 					styles.rail,
 					local.open && styles.open,
@@ -64,10 +66,12 @@ export const NavigationRail: ParentComponent<NavigationRailProps> = props => {
 					isFull() && styles.collapse,
 					local.iconType === 'full' && styles.icon,
 					local.modal && styles.modal,
+					local.class,
 				)}
 				data-rail-open={String(local.open)}
 				data-rail-icon={String(local.iconType === 'full')}
 				data-rail-fill={String(local.fill)}
+				{...others}
 			>
 				<Show when={showCollapse() || local.fab}>
 					<div class={styles.top}>
@@ -91,7 +95,7 @@ export const NavigationRail: ParentComponent<NavigationRailProps> = props => {
 				>
 					{local.children}
 				</div>
-			</div>
+			</nav>
 
 			<Show when={local.modal}>
 				<div

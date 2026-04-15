@@ -25,7 +25,6 @@
 	& .pill {
 		position: absolute;
 		display: block;
-		z-index: 0;
 		top: 0;
 
 		/* Offset 16px to be centered */
@@ -74,7 +73,6 @@
 .icon {
 	pointer-events: none;
 	height: 32px;
-	z-index: 1;
 	flex-shrink: 0;
 	transition: all var(--m3-easing-slow);
 

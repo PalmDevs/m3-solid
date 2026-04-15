@@ -32,10 +32,18 @@ export const NavigationRailItem = (props: NavigationRailItemProps) => {
 	const isLink = () => local.href !== undefined
 
 	onMount(() => {
-		const triggerPill = () => pill?.click()
+		const handleEvent = (e: Event) => {
+			if (e.target === pill) return
+			const eventClone = new (e.constructor as any)(e.type, e)
+			pill?.dispatchEvent(eventClone)
+		}
 
-		ref?.addEventListener('click', triggerPill)
-		onCleanup(() => ref?.removeEventListener('click', triggerPill))
+		const events = ['pointerdown', 'pointerup', 'keydown', 'keyup']
+		for (const type of events) ref?.addEventListener(type, handleEvent)
+
+		onCleanup(() => {
+			for (const type of events) ref?.removeEventListener(type, handleEvent)
+		})
 	})
 
 	return (
