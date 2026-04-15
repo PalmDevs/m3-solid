@@ -4,37 +4,37 @@ import styles from './ListItem.module.css'
 import type { ComponentProps, JSX, JSXElement, ParentComponent } from 'solid-js'
 
 export type ListItemProps = {
-    leading?: JSXElement
-    overline?: JSXElement
-    headline?: JSXElement
-    supporting?: JSXElement
-    trailing?: JSXElement
-    lines?: number
+	leading?: JSXElement
+	overline?: JSXElement
+	headline?: JSXElement
+	supporting?: JSXElement
+	trailing?: JSXElement
+	lines?: number
 } & (
-    | ({
-            onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent>
-            href?: never
-            label?: never
-      } & ComponentProps<'button'>)
-    | ({
-            href: string
-            onClick?: never
-            label?: never
-      } & ComponentProps<'a'>)
-    | ({
-            onClick?: never
-            href?: never
-            label?: never
-      } & ComponentProps<'div'>)
-    | ({
+	| ({
+			onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent>
+			href?: never
+			label?: never
+	  } & ComponentProps<'button'>)
+	| ({
+			href: string
+			onClick?: never
+			label?: never
+	  } & ComponentProps<'a'>)
+	| ({
+			onClick?: never
+			href?: never
+			label?: never
+	  } & ComponentProps<'div'>)
+	| ({
 			/**
-	 		* Whether to render the list item as a `<label>` element.
-	 		* Useful when the list item contains form elements.
-	 		*/
-            label: true
-            onClick?: never
-            href?: never
-      } & ComponentProps<'label'>)
+			 * Whether to render the list item as a `<label>` element.
+			 * Useful when the list item contains form elements.
+			 */
+			label: true
+			onClick?: never
+			href?: never
+	  } & ComponentProps<'label'>)
 )
 
 export const ListItem: ParentComponent<ListItemProps> = props => {
