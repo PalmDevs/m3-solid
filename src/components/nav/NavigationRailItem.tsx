@@ -9,6 +9,7 @@ import type { ComponentProps } from 'solid-js'
 interface NavigationRailItemBaseProps {
 	label: string
 	icon: IconifyIcon
+	activeIcon?: IconifyIcon
 	active?: boolean
 }
 
@@ -21,6 +22,7 @@ export const NavigationRailItem = (props: NavigationRailItemProps) => {
 	const [local, others] = splitProps(props, [
 		'label',
 		'icon',
+		'activeIcon',
 		'active',
 		'class',
 		'href',
@@ -69,7 +71,9 @@ export const NavigationRailItem = (props: NavigationRailItemProps) => {
 				class={mergeClasses(styles.pill, 'm3-ripple')}
 			/>
 			<div class={styles.icon}>
-				<Icon icon={local.icon} />
+				<Icon
+					icon={local.active ? (local.activeIcon ?? local.icon) : local.icon}
+				/>
 			</div>
 			<span class={mergeClasses(styles.labelCollapsed, 'm3-label-medium')}>
 				{local.label}
