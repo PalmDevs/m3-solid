@@ -2,12 +2,20 @@
 	display: flex;
 	gap: 8px;
 	position: relative;
-	width: 56px;
+	width: max-content;
+
+	min-width: 88px;
 	height: 56px;
+
 	background: none;
 	border: none;
+	border-radius: var(--m3-shape-small);
+
+	/* 4 + 16 (pad) + 56 (content) + 16 (pad) + 4 = 96px total */
 	padding: 0;
-	margin-inline: 20px;
+	padding-inline: 16px;
+	margin-inline: 4px;
+
 	cursor: pointer;
 	text-decoration: none;
 	user-select: none;
@@ -19,8 +27,11 @@
 		display: block;
 		z-index: 0;
 		top: 0;
-		left: 0;
+
+		/* Offset 16px to be centered */
+		left: 16px;
 		width: 56px;
+
 		height: 32px;
 		border-radius: var(--m3-shape-full);
 		transition: all var(--m3-easing-slow);
@@ -33,9 +44,12 @@
 
 .labelExpanded {
 	align-self: center;
+	max-width: 0px;
 	opacity: 0;
 	z-index: 1;
-	transition: opacity var(--m3-easing-fast);
+	transition:
+		opacity var(--m3-easing-fast),
+		max-width var(--m3-easing-slow);
 	white-space: nowrap;
 	pointer-events: none;
 }
@@ -43,13 +57,17 @@
 .labelCollapsed {
 	position: absolute;
 	top: 36px;
-	left: 0;
-	width: 56px;
+
+	/* 16px left padding + 28px (half of pill) = 44px */
+	left: 44px;
+	transform: translateX(-50%);
+
+	width: max-content;
 	text-align: center;
-	transition: opacity var(--m3-easing-fast);
-	overflow: hidden;
+	transition:
+		opacity var(--m3-easing-fast),
+		left var(--m3-easing-slow);
 	white-space: nowrap;
-	text-overflow: ellipsis;
 	pointer-events: none;
 }
 
@@ -67,12 +85,12 @@
 	> :global(svg) {
 		width: 24px;
 		height: 24px;
-		transition: margin var(--m3-easing);
+		transition: margin var(--m3-easing-slow);
 		color: var(--m3c-on-surface-variant);
 		position: relative;
 		/* Explicit base value for SVG margin */
 		margin: 0px;
-		
+
 		.active & {
 			color: var(--m3c-on-secondary-container);
 		}
@@ -91,9 +109,13 @@
 
 	& .inner {
 		width: fit-content;
+		max-width: calc(infinity * 1px);
 		padding: 16px;
 
+		margin-inline: 20px;
+
 		& .pill {
+			left: 0px;
 			width: 100%;
 			height: 56px;
 		}
@@ -105,10 +127,14 @@
 	}
 
 	& .labelExpanded {
+		/* This will snap the width back to the size once the transition completes */
+		max-width: calc(infinity * 1px);
 		opacity: 1;
 	}
 
 	& .labelCollapsed {
+		/* 44 - 28 = 16 (offset, so it only moves vertically because of the .inner padding change) */
+		left: 28px;
 		opacity: 0;
 	}
 
@@ -125,13 +151,13 @@
 
 [data-rail-icon="true"]:not([data-rail-open="true"]) {
 	& .container {
-		margin-inline: 20px;
-		width: calc(100% - 40px);
+		margin-inline: 4px;
+		width: calc(100% - 8px);
 	}
 
 	& .inner {
-		width: 56px;
-		padding: 16px;
+		max-width: 88px;
+		padding-inline: 32px;
 
 		& .pill {
 			height: 56px;
@@ -147,6 +173,7 @@
 		width: 24px;
 		height: 24px;
 		padding-inline-start: 0px;
+		padding-top: 16px;
 
 		> :global(svg) {
 			margin: 0px;
@@ -161,14 +188,9 @@
 
 [data-rail-open="false"]:not([data-rail-icon="true"]) {
 	& .container {
-		width: calc(100% - 40px);
+		width: calc(100% - 8px);
 		margin-inline-end: auto;
-		margin-inline-start: 20px;
-	}
-
-	& .inner:focus-visible .icon {
-		outline: 3px solid var(--m3c-on-secondary-container);
-		outline-offset: 2px;
+		margin-inline-start: 4px;
 	}
 
 	& .active .icon {
@@ -189,3 +211,24 @@
 [data-rail-fill="true"] .inner {
 	width: auto;
 }
+
+/* 
+In case you ever need to debug it again (don't, it's not worth it):
+
+.debug {
+	&.inner {
+		outline: 1px solid blue;
+
+		.pill {
+			outline: 1px solid red;
+		}
+
+		.icon {
+			outline: 1px solid green;
+
+			> :global(svg) {
+				outline: 1px solid orange;
+			}
+		}
+	}
+} */
