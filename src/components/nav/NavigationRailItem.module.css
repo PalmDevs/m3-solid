@@ -109,6 +109,7 @@
 		width: fit-content;
 		max-width: calc(infinity * 1px);
 		padding: 16px;
+		color: var(--m3c-on-secondary-container);
 
 		margin-inline: 20px;
 
