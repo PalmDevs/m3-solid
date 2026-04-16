@@ -60,7 +60,6 @@ export const NavigationRailItem = (props: NavigationRailItemProps) => {
 				styles.inner,
 				local.active && styles.active,
 				local.class,
-				// styles.debug,
 			)}
 			role="menuitem"
 			{...others}

@@ -1,233 +1,161 @@
 .inner {
+	position: relative;
 	display: flex;
 	gap: 8px;
-	position: relative;
-	width: max-content;
 
-	min-width: 88px;
-	height: 56px;
+	width: max-content;
+	min-width: 96px;
+	min-height: 64px;
+	padding: 6px 20px;
 
 	background: none;
 	border: none;
 	border-radius: var(--m3-shape-small);
-
-	/* 4 + 16 (pad) + 56 (content) + 16 (pad) + 4 = 96px total */
-	padding: 0;
-	padding-inline: 16px;
-	margin-inline: 4px;
+	color: var(--m3c-on-surface-variant);
 
 	cursor: pointer;
 	text-decoration: none;
 	user-select: none;
-	color: var(--m3c-on-surface-variant);
 	transition: all var(--m3-easing-slow);
 
-	& .pill {
-		position: absolute;
-		display: block;
-		top: 0;
+	&.active {
+		color: var(--m3c-on-secondary-container);
+	}
 
-		/* Offset 16px to be centered */
-		left: 16px;
-		width: 56px;
+	[data-rail-open="true"] & {
+		width: fit-content;
+		max-width: calc(infinity * 1px);
+		min-height: 56px;
+		margin-inline: 20px;
+		padding: 16px;
+	}
 
-		height: 32px;
+	[data-rail-fill="true"] & {
+		width: auto;
+	}
+}
+
+.pill {
+	position: absolute;
+	top: 6px; /* Offset to be centered */
+	left: 20px;
+	display: block;
+
+	width: 56px;
+	height: 32px;
+
+	border-radius: var(--m3-shape-full);
+	transition:
+		all var(--m3-easing-spatial),
+		left var(--m3-easing-slow);
+
+	.active & {
+		background-color: var(--m3c-secondary-container);
+	}
+
+	[data-rail-open="true"] & {
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 56px;
+	}
+
+	/* Pill focus background */
+	:focus-visible > &::before {
+		background-color: oklab(from var(--m3c-on-surface) l a b / 10%);
 		border-radius: var(--m3-shape-full);
-		transition: all var(--m3-easing-slow);
-
-		.active & {
-			background-color: var(--m3c-secondary-container);
-		}
+		transition: background-color var(--m3-easing-fast);
 	}
 }
 
 .labelExpanded {
 	align-self: center;
-	max-width: 0px;
-	opacity: 0;
 	z-index: 1;
+	opacity: 0;
+	pointer-events: none;
 	transition:
 		opacity var(--m3-easing-fast),
 		max-width var(--m3-easing-slow);
-	white-space: nowrap;
-	pointer-events: none;
 }
 
 .labelCollapsed {
 	position: absolute;
-	top: 36px;
-
-	/* 16px left padding + 28px (half of pill) = 44px */
-	left: 44px;
+	top: 42px;
+	left: 48px;
 	transform: translateX(-50%);
-
-	width: max-content;
-	text-align: center;
 	transition:
 		opacity var(--m3-easing-fast),
 		left var(--m3-easing-slow);
-	white-space: nowrap;
-	pointer-events: none;
 }
 
 .icon {
-	pointer-events: none;
-	height: 32px;
-	flex-shrink: 0;
+	display: flex;
+	z-index: 1;
+	padding-inline-start: 16px;
+	padding-top: 4px;
 	transition: all var(--m3-easing-slow);
-
-	/* Explicit base values for transition calculations */
-	width: 24px;
-	padding-inline-start: 0px;
 
 	> :global(svg) {
 		width: 24px;
 		height: 24px;
-		transition: margin var(--m3-easing-slow);
-		color: var(--m3c-on-surface-variant);
-		position: relative;
-		/* Explicit base value for SVG margin */
-		margin: 0px;
-
-		.active & {
-			color: var(--m3c-on-secondary-container);
-		}
+		color: inherit;
 	}
 }
 
-[data-rail-fill="true"] .inner {
-	width: 100%;
-}
-
+/* Open */
 [data-rail-open="true"] {
-	& .container {
-		margin-inline: 20px;
-		width: calc(100% - 40px);
-	}
-
-	& .inner {
-		width: fit-content;
-		max-width: calc(infinity * 1px);
-		padding: 16px;
-		color: var(--m3c-on-secondary-container);
-
-		margin-inline: 20px;
-
-		& .pill {
-			left: 0px;
-			width: 100%;
-			height: 56px;
-		}
-	}
-
-	& .inner:focus-visible {
-		outline: 3px solid var(--m3c-on-secondary-container);
-		outline-offset: 2px;
-	}
-
-	& .labelExpanded {
-		/* This will snap the width back to the size once the transition completes */
-		max-width: calc(infinity * 1px);
+	.labelExpanded {
 		opacity: 1;
 	}
 
-	& .labelCollapsed {
-		/* 44 - 28 = 16 (offset, so it only moves vertically because of the .inner padding change) */
+	.labelCollapsed {
 		left: 28px;
 		opacity: 0;
 	}
 
-	& .icon {
-		width: 24px;
+	.icon {
 		height: 24px;
-		padding-inline-start: 0px;
-
-		> :global(svg) {
-			margin: 0px;
-		}
+		padding: 0px;
 	}
 }
 
+/* Icon-only & not-open */
 [data-rail-icon="true"]:not([data-rail-open="true"]) {
-	& .container {
-		margin-inline: 4px;
-		width: calc(100% - 8px);
-	}
+	.inner {
+		padding-block: 4px;
 
-	& .inner {
-		max-width: 88px;
-		padding-inline: 32px;
-
-		& .pill {
+		.pill {
+			top: 4px;
 			height: 56px;
 		}
 	}
 
-	& .inner:focus-visible {
-		outline: 3px solid var(--m3c-on-secondary-container);
-		outline-offset: 2px;
-	}
-
-	& .icon {
-		width: 24px;
-		height: 24px;
-		padding-inline-start: 0px;
+	.icon {
+		height: 40px;
 		padding-top: 16px;
-
-		> :global(svg) {
-			margin: 0px;
-		}
+		padding-inline-start: 16px;
 	}
 
-	& .labelExpanded,
-	& .labelCollapsed {
+	.labelExpanded,
+	.labelCollapsed {
 		opacity: 0;
 	}
 }
 
-[data-rail-open="false"]:not([data-rail-icon="true"]) {
-	& .container {
-		width: calc(100% - 8px);
-		margin-inline-end: auto;
-		margin-inline-start: 4px;
+/* In case you ever need to debug it again (don't, it's not worth it): */
+
+/* .inner {
+	outline: 1px solid blue;
+
+	.pill {
+		outline: 1px solid red;
 	}
 
-	& .active .icon {
-		color: var(--m3c-secondary);
-	}
-
-	& .icon {
-		padding-inline-start: 16px;
-		/* Accommodates the 24px content + 16px padding */
-		width: 40px;
+	.icon {
+		outline: 1px solid green;
 
 		> :global(svg) {
-			margin: 4px 0;
-		}
-	}
-}
-
-[data-rail-fill="true"] .inner {
-	width: auto;
-}
-
-/* 
-In case you ever need to debug it again (don't, it's not worth it):
-
-.debug {
-	&.inner {
-		outline: 1px solid blue;
-
-		.pill {
-			outline: 1px solid red;
-		}
-
-		.icon {
-			outline: 1px solid green;
-
-			> :global(svg) {
-				outline: 1px solid orange;
-			}
+			outline: 1px solid orange;
 		}
 	}
 } */

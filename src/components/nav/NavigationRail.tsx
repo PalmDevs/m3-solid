@@ -41,6 +41,7 @@ export const NavigationRail: ParentComponent<NavigationRailProps> = props => {
 		'class',
 	])
 
+	const childrenOpen = () => (local.collapse === 'full' ? true : local.open)
 	const showCollapse = () => local.collapse !== 'no' && local.collapse !== false
 	const isFull = () => local.collapse === 'full'
 
@@ -69,7 +70,7 @@ export const NavigationRail: ParentComponent<NavigationRailProps> = props => {
 					local.modal && styles.modal,
 					local.class,
 				)}
-				data-rail-open={String(local.open)}
+				data-rail-open={String(childrenOpen())}
 				data-rail-icon={String(local.iconType === 'full')}
 				data-rail-fill={String(local.fill)}
 				{...others}
@@ -79,7 +80,7 @@ export const NavigationRail: ParentComponent<NavigationRailProps> = props => {
 						<Show when={showCollapse()}>
 							<NavigationRailToggle
 								mode={isFull() ? 'inline-detached' : 'inline'}
-								open={local.open}
+								open={childrenOpen()}
 								onChange={local.onChange}
 							/>
 						</Show>
