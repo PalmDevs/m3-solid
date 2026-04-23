@@ -73,6 +73,7 @@
 	z-index: 1;
 	opacity: 0;
 	pointer-events: none;
+	flex-shrink: 0;
 	transition:
 		opacity var(--m3-easing-fast),
 		max-width var(--m3-easing-slow);
@@ -81,8 +82,8 @@
 .labelCollapsed {
 	position: absolute;
 	top: 42px;
-	left: 48px;
-	transform: translateX(-50%);
+	left: 28px;
+	transform: translateX(calc(-50% + 20px));
 	transition:
 		opacity var(--m3-easing-fast),
 		left var(--m3-easing-slow);
@@ -109,7 +110,7 @@
 	}
 
 	.labelCollapsed {
-		left: 28px;
+		left: 8px;
 		opacity: 0;
 	}
 
