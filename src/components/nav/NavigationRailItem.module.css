@@ -23,7 +23,7 @@
 	}
 
 	[data-rail-open="true"] & {
-		width: fit-content;
+		width: max-content;
 		max-width: calc(infinity * 1px);
 		min-height: 56px;
 		margin-inline: 20px;

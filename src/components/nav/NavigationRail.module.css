@@ -46,7 +46,9 @@
 	width: 96px;
 	height: 100%;
 	padding: 44px 0 56px 0;
-	transition: all var(--m3-easing-spatial);
+	transition:
+		width var(--m3-easing-spatial),
+		background var(--m3-easing);
 	overflow: hidden;
 	overflow-y: auto;
 	scrollbar-width: none;
