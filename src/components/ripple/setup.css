@@ -4,6 +4,7 @@ m3-ripple,
 	inset: 0px;
 	width: 100%;
 	height: 100%;
+	z-index: -1;
 	overflow: hidden;
 	border-radius: inherit;
 	pointer-events: none;
@@ -11,22 +12,18 @@ m3-ripple,
 
 :where(.m3-ripple) {
 	position: relative;
+	isolation: isolate;
 	-webkit-tap-highlight-color: transparent;
 
 	/* Hitbox for rounded elements */
 }
 
+/* Tint */
 :where(.m3-ripple)::before {
 	content: "";
 	position: absolute;
 	inset: 0;
-}
-
-/* Tint */
-:where(.m3-ripple)::after {
-	content: "";
-	position: absolute;
-	inset: 0;
+	z-index: -1;
 	border-radius: inherit;
 	pointer-events: none;
 	background-color: currentColor;
@@ -34,8 +31,8 @@ m3-ripple,
 	transition: opacity var(--m3-easing-fast);
 }
 
-:disabled.m3-ripple::after,
-label:has(> input:disabled).m3-ripple::after {
+:disabled.m3-ripple::before,
+label:has(> input:disabled).m3-ripple::before {
 	display: none;
 }
 
@@ -43,22 +40,22 @@ label:has(> input:disabled).m3-ripple::after {
 	.m3-ripple:not(
 			:has(.m3-ripple:hover, .m3-ripple:focus-visible, .m3-ripple:active)
 		) {
-		&:hover::after {
+		&:hover::before {
 			opacity: 0.08;
 		}
 
-		&:focus-visible::after {
+		&:focus-visible::before {
 			opacity: 0.1;
 		}
 
-		&:active::after {
+		&:active::before {
 			opacity: 0.12;
 		}
 	}
 }
 
-:focus-visible.m3-ripple::after,
-label:has(> input:focus-visible).m3-ripple::after,
-html:not([data-m3-js-ripple]) :active.m3-ripple::after {
+:focus-visible.m3-ripple::before,
+label:has(> input:focus-visible).m3-ripple::before,
+html:not([data-m3-js-ripple]) :active.m3-ripple::before {
 	opacity: 0.12;
 }
