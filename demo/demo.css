@@ -6,6 +6,10 @@
 	accent-color: var(--m3c-primary);
 }
 
+label {
+	-webkit-tap-highlight-color: transparent;
+}
+
 body {
 	margin: 0;
 	font-family: var(--m3-font);
