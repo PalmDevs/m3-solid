@@ -207,6 +207,7 @@
 .outlined {
 	--_outline-color: var(--m3-button-outline-color, var(--m3c-outline));
 	--_label-color: var(--m3-button-label-color, var(--m3c-primary));
+	--_disabled-container-color: transparent;
 	border: solid var(--m3-button-outline-width, 1px) var(--_outline-color);
 
 	&:not(:disabled):not(:has(> input:disabled)):has(> input:checked) {
@@ -224,6 +225,7 @@
 
 .text {
 	--_label-color: var(--m3-button-label-color, var(--m3c-primary));
+	--_disabled-container-color: transparent;
 
 	&:not(:disabled):not(:has(> input:disabled)):has(> input:checked) {
 		--_container-color: var(
