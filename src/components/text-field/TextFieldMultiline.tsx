@@ -1,9 +1,9 @@
 import { mergeRefs } from '@solid-primitives/refs'
 import {
-	createEffect,
 	createSignal,
 	createUniqueId,
 	mergeProps,
+	onCleanup,
 	onMount,
 	Show,
 	splitProps,
@@ -13,7 +13,7 @@ import filledStyles from './FilledTextField.module.css'
 import outlinedStyles from './OutlinedTextField.module.css'
 import { FieldContent, SupportingText } from './shared'
 import sharedStyles from './shared.module.css'
-import type { Component, ComponentProps, JSX } from 'solid-js'
+import type { Component, ComponentProps, JSX, JSXElement } from 'solid-js'
 import type { BaseTextFieldProps } from './shared'
 
 export interface TextFieldMultilineProps
@@ -37,26 +37,22 @@ export const TextFieldMultiline: Component<TextFieldMultilineProps> = props => {
 		'id',
 		'supportingText',
 		'ref',
+		'onInput',
 	])
 
-	// Whether we should be controlling the states internally
-	const isErrorControlled = () => props.error !== undefined
-	const isSupportingTextControlled = () => props.supportingText !== undefined
+	const [internalError, setInternalError] = createSignal(false)
+	const [internalSupportingText, setInternalSupportingText] =
+		createSignal<JSXElement>()
 
-	const [supportingText, setSupportingText] = createSignal(props.supportingText)
-	const [error, setError] = createSignal(props.error)
-
-	createEffect(() => {
-		if (isSupportingTextControlled() && isErrorControlled())
-			setSupportingText(props.supportingText)
-	})
-
-	createEffect(() => {
-		if (isErrorControlled()) setError(props.error)
-	})
+	const error = () => local.error ?? internalError()
+	const supportingText = () => {
+		if (local.error !== undefined) return local.supportingText
+		if (internalError()) return internalSupportingText()
+		return local.supportingText
+	}
 
 	const generatedId = createUniqueId()
-	const inputId = () => props.id ?? generatedId
+	const inputId = () => local.id ?? generatedId
 
 	let containerRef: HTMLDivElement | undefined
 	let textareaRef: HTMLTextAreaElement | undefined
@@ -68,23 +64,49 @@ export const TextFieldMultiline: Component<TextFieldMultilineProps> = props => {
 		}
 	}
 
-	onMount(resize)
+	onMount(() => {
+		resize()
+		const form = textareaRef?.form
+		if (form) {
+			function tryClearError() {
+				if (textareaRef?.checkValidity()) {
+					setInternalError(false)
+					setInternalSupportingText(undefined)
+				}
+			}
+
+			form.addEventListener('submit', tryClearError)
+			onCleanup(() => form.removeEventListener('submit', tryClearError))
+		}
+	})
 
 	const handleInvalid: JSX.EventHandler<HTMLTextAreaElement, Event> = e => {
-		props.onInvalid?.(e.currentTarget.value, e.currentTarget.validationMessage)
+		local.onInvalid?.(e.currentTarget.value, e.currentTarget.validationMessage)
 
-		if (!isErrorControlled()) {
-			setError(true)
-			setSupportingText(e.currentTarget.validationMessage)
+		if (local.error === undefined) {
+			setInternalError(true)
+			setInternalSupportingText(e.currentTarget.validationMessage)
 		}
 
-		const input = e.currentTarget
-		requestIdleCallback(() => {
-			// Make it valid to the browser so the user can resubmit
-			input.setCustomValidity('')
-		})
-
 		e.preventDefault()
+	}
+
+	const handleInput: JSX.InputEventHandler<
+		HTMLTextAreaElement,
+		InputEvent
+	> = e => {
+		resize()
+		if (internalError() && e.currentTarget.checkValidity()) {
+			setInternalError(false)
+			setInternalSupportingText(undefined)
+		}
+
+		const onInput = local.onInput
+		if (typeof onInput === 'function') {
+			onInput(e)
+		} else if (Array.isArray(onInput)) {
+			onInput[0](onInput[1], e)
+		}
 	}
 
 	const getStyles = () =>
@@ -114,7 +136,7 @@ export const TextFieldMultiline: Component<TextFieldMultilineProps> = props => {
 						local.ref,
 					)}
 					placeholder=" "
-					on:input={resize}
+					onInput={handleInput}
 					onInvalid={handleInvalid}
 					id={inputId()}
 					class={mergeClasses(sharedStyles.textArea, local.class)}
@@ -123,7 +145,8 @@ export const TextFieldMultiline: Component<TextFieldMultilineProps> = props => {
 					styles={getStyles()}
 					inputId={inputId()}
 					multi
-					{...merged}
+					{...local}
+					error={error()}
 				/>
 			</div>
 			<Show when={supportingText()}>

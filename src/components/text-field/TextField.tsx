@@ -1,6 +1,5 @@
 import { mergeRefs } from '@solid-primitives/refs'
 import {
-	createEffect,
 	createSignal,
 	createUniqueId,
 	mergeProps,
@@ -14,7 +13,7 @@ import filledStyles from './FilledTextField.module.css'
 import outlinedStyles from './OutlinedTextField.module.css'
 import { FieldContent, SupportingText } from './shared'
 import sharedStyles from './shared.module.css'
-import type { Component, ComponentProps, JSX } from 'solid-js'
+import type { Component, ComponentProps, JSX, JSXElement } from 'solid-js'
 import type { BaseTextFieldProps } from './shared'
 
 export interface TextFieldProps
@@ -40,19 +39,30 @@ export const TextField: Component<TextFieldProps> = props => {
 		'onInvalid',
 		'id',
 		'supportingText',
+		'ref',
+		'onInput',
 	])
 
 	let input!: HTMLInputElement
+
+	const [internalError, setInternalError] = createSignal(false)
+	const [internalSupportingText, setInternalSupportingText] =
+		createSignal<JSXElement>()
+
+	const error = () => local.error ?? internalError()
+	const supportingText = () => {
+		if (local.error !== undefined) return local.supportingText
+		if (internalError()) return internalSupportingText()
+		return local.supportingText
+	}
 
 	onMount(() => {
 		const form = input.form
 		if (form) {
 			function tryClearError() {
-				if (input.reportValidity()) {
-					if (!isErrorControlled()) {
-						setError(false)
-						setSupportingText(props.supportingText)
-					}
+				if (input.checkValidity()) {
+					setInternalError(false)
+					setInternalSupportingText(undefined)
 				}
 			}
 
@@ -61,40 +71,35 @@ export const TextField: Component<TextFieldProps> = props => {
 		}
 	})
 
-	// Whether we should be controlling the states internally
-	const isErrorControlled = () => props.error !== undefined
-	const isSupportingTextControlled = () => props.supportingText !== undefined
-
-	const [supportingText, setSupportingText] = createSignal(props.supportingText)
-	const [error, setError] = createSignal(props.error)
-
-	createEffect(() => {
-		if (isSupportingTextControlled() && isErrorControlled())
-			setSupportingText(props.supportingText)
-	})
-
-	createEffect(() => {
-		if (isErrorControlled()) setError(props.error)
-	})
-
 	const generatedId = createUniqueId()
-	const inputId = () => props.id ?? generatedId
+	const inputId = () => local.id ?? generatedId
 
 	const handleInvalid: JSX.EventHandler<HTMLInputElement, Event> = e => {
-		props.onInvalid?.(e.currentTarget.value, e.currentTarget.validationMessage)
+		local.onInvalid?.(e.currentTarget.value, e.currentTarget.validationMessage)
 
-		if (!isErrorControlled()) {
-			setError(true)
-			setSupportingText(e.currentTarget.validationMessage)
+		if (local.error === undefined) {
+			setInternalError(true)
+			setInternalSupportingText(e.currentTarget.validationMessage)
 		}
 
-		const input = e.currentTarget
-		requestIdleCallback(() => {
-			// Make it valid to the browser so the user can resubmit
-			input.setCustomValidity('')
-		})
-
 		e.preventDefault()
+	}
+
+	const handleInput: JSX.InputEventHandler<
+		HTMLInputElement,
+		InputEvent
+	> = e => {
+		if (internalError() && e.currentTarget.checkValidity()) {
+			setInternalError(false)
+			setInternalSupportingText(undefined)
+		}
+
+		const onInput = local.onInput
+		if (typeof onInput === 'function') {
+			onInput(e)
+		} else if (Array.isArray(onInput)) {
+			onInput[0](onInput[1], e)
+		}
 	}
 
 	const getStyles = () =>
@@ -116,13 +121,14 @@ export const TextField: Component<TextFieldProps> = props => {
 			<div class={containerClass()}>
 				<input
 					{...others}
-					ref={mergeRefs(el => (input = el), props.ref)}
+					ref={mergeRefs(el => (input = el), local.ref)}
 					aria-labelledby={local.label ? `${inputId()}-st` : undefined}
 					aria-invalid={error() ? 'true' : 'false'}
 					aria-describedby={error() ? `${inputId()}-st` : undefined}
 					id={inputId()}
 					class={mergeClasses(sharedStyles.textArea, local.class)}
 					placeholder=" "
+					onInput={handleInput}
 					onInvalid={handleInvalid}
 				/>
 				<FieldContent
