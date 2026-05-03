@@ -119,12 +119,11 @@ export const TextFieldMultiline: Component<TextFieldMultilineProps> = props => {
 			sharedStyles.containerBase,
 			sharedStyles.multiLine,
 			error() && styles.error,
-			local.class,
 		)
 	}
 
 	return (
-		<div class={sharedStyles.rootContainer}>
+		<div class={mergeClasses(sharedStyles.rootContainer, local.class)}>
 			<div ref={containerRef} class={containerClass()}>
 				<textarea
 					{...others}

@@ -75,8 +75,8 @@ export const FieldContent = (
 					class={`${sharedStyles.leading} ${sharedStyles.icon}`}
 				/>
 			</Show>
-			<div class={sharedStyles.trailing}>
-				<Show when={props.trailing}>
+			<Show when={props.trailing}>
+				<div class={sharedStyles.trailing}>
 					{/* TODO: Replace with IconButton */}
 					<button
 						type="button"
@@ -91,23 +91,23 @@ export const FieldContent = (
 							/>
 						</div>
 					</button>
-				</Show>
-				<Show
-					when={props.errorIcon !== false && !props.trailing && props.error}
-				>
-					<div class={sharedStyles.iconContainer}>
-						<Icon
-							size={24}
-							icon={
-								typeof props.errorIcon === 'object'
-									? props.errorIcon
-									: ErrorIcon
-							}
-							class={`${sharedStyles.icon} ${sharedStyles.error}`}
-						/>
-					</div>
-				</Show>
-			</div>
+					<Show
+						when={props.errorIcon !== false && !props.trailing && props.error}
+					>
+						<div class={sharedStyles.iconContainer}>
+							<Icon
+								size={24}
+								icon={
+									typeof props.errorIcon === 'object'
+										? props.errorIcon
+										: ErrorIcon
+								}
+								class={`${sharedStyles.icon} ${sharedStyles.error}`}
+							/>
+						</div>
+					</Show>
+				</div>
+			</Show>
 		</>
 	)
 }

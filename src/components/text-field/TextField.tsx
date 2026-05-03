@@ -112,12 +112,11 @@ export const TextField: Component<TextFieldProps> = props => {
 			sharedStyles.containerBase,
 			sharedStyles.singleLine,
 			error() && styles.error,
-			local.class,
 		)
 	}
 
 	return (
-		<div class={sharedStyles.rootContainer}>
+		<div class={mergeClasses(sharedStyles.rootContainer, local.class)}>
 			<div class={containerClass()}>
 				<input
 					{...others}

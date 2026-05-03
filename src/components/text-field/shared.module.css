@@ -1,6 +1,7 @@
 .rootContainer {
 	display: flex;
 	flex-direction: column;
+	min-width: var(--m3-text-field-container-min-width, 15rem);
 }
 
 .singleLine {
@@ -58,9 +59,8 @@
 	--_caret-color: var(--m3-text-field-caret-color, var(--m3c-primary));
 
 	display: inline-flex;
-	position: relative;
-	align-items: center;
-	min-width: var(--m3-text-field-container-min-width, 15rem);
+	min-width: 0;
+	flex-grow: 1;
 }
 
 .textArea {
