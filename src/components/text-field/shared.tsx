@@ -10,6 +10,7 @@ export type TextFieldVariant = 'outlined' | 'filled'
 
 export interface BaseTextFieldProps {
 	label: JSXElement
+	containerStyle?: JSX.CSSProperties
 	/**
 	 * If `true`, the text field will be displayed in an error state.
 	 *

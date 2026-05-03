@@ -41,6 +41,7 @@ export const TextField: Component<TextFieldProps> = props => {
 		'supportingText',
 		'ref',
 		'onInput',
+		'containerStyle',
 	])
 
 	let input!: HTMLInputElement
@@ -116,7 +117,10 @@ export const TextField: Component<TextFieldProps> = props => {
 	}
 
 	return (
-		<div class={mergeClasses(sharedStyles.rootContainer, local.class)}>
+		<div
+			class={mergeClasses(sharedStyles.rootContainer, local.class)}
+			style={local.containerStyle}
+		>
 			<div class={containerClass()}>
 				<input
 					{...others}

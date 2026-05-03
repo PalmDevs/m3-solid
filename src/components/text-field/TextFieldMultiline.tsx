@@ -38,6 +38,7 @@ export const TextFieldMultiline: Component<TextFieldMultilineProps> = props => {
 		'supportingText',
 		'ref',
 		'onInput',
+		'containerStyle',
 	])
 
 	const [internalError, setInternalError] = createSignal(false)
@@ -123,7 +124,10 @@ export const TextFieldMultiline: Component<TextFieldMultilineProps> = props => {
 	}
 
 	return (
-		<div class={mergeClasses(sharedStyles.rootContainer, local.class)}>
+		<div
+			class={mergeClasses(sharedStyles.rootContainer, local.class)}
+			style={local.containerStyle}
+		>
 			<div ref={containerRef} class={containerClass()}>
 				<textarea
 					{...others}
