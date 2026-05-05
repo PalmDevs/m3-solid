@@ -60,6 +60,7 @@ export const NavigationRail: ParentComponent<NavigationRailProps> = props => {
 	return (
 		<div class={mergeClasses('m3-container', styles.wrapper)}>
 			<nav
+				inert={local.modal && !local.open}
 				tabindex="-1"
 				class={mergeClasses(
 					styles.rail,
