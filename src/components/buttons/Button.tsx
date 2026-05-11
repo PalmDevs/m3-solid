@@ -113,11 +113,13 @@ export const Button: ParentComponent<ButtonProps> = props => {
 			class={classNames()}
 			{...others}
 		>
-			<Show when={local.iconType !== 'left' && local.icon}>
-				<Icon
-					icon={local.icon!}
-					size={getButtonIconSize(local.size, local.iconType === 'only')}
-				/>
+			<Show when={local.icon}>
+				{icon => (
+					<Icon
+						icon={icon()}
+						size={getButtonIconSize(local.size, local.iconType === 'only')}
+					/>
+				)}
 			</Show>
 			{local.children}
 		</Dynamic>
