@@ -37,7 +37,7 @@ export default defineConfig(({ command }) => {
 			? undefined
 			: {
 					lib: {
-						entry: resolve(__dirname, 'src/index.ts'),
+						entry: resolve(__dirname, 'src/index.tsx'),
 						name: 'M3Solid',
 						formats: ['es'],
 						fileName: () => 'index.js',
