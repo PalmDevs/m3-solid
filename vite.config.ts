@@ -26,6 +26,13 @@ export default defineConfig(({ command }) => {
 				}),
 		].filter(Boolean),
 		root: isServe ? '.' : undefined,
+		css: {
+			modules: {
+				generateScopedName: isServe
+					? 'm3s-[name]__[local]__[hash:base64:5]'
+					: 'm3s-[hash:base64:5]',
+			},
+		},
 		build: isServe
 			? undefined
 			: {
