@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"rootDir": ".",
 		// Environment setup & latest features
 		"lib": ["ESNext", "DOM"],
 		"target": "ESNext",
@@ -32,5 +33,5 @@
 		"noUnusedParameters": false,
 		"noPropertyAccessFromIndexSignature": false
 	},
-	"include": ["src", "demo"]
+	"include": ["src"]
 }
